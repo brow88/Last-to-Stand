@@ -9,6 +9,16 @@ public class GameManager : MonoBehaviour
 
     public event EventHandler OnGameStateChange;
 
+    [Tooltip("Timer count down before game starts")]
+    public float startTimer = 3f;
+
+    public enum GameMode
+    {
+        SinglePlayer,
+        Multiplyer,
+    }
+    private GameMode gameMode;
+
     public enum GameState
     {
         Tutorial,
@@ -18,9 +28,8 @@ public class GameManager : MonoBehaviour
     }
     private GameState state;
 
-    private float startTimer = 3f;
-
-    private int playerScore = 0;
+    //Player scores
+    private Dictionary<Player, int> playersScores = new Dictionary<Player, int>();
 
 
     void Awake()
@@ -35,6 +44,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    //TODO: eventually this will be called by mainMenu
+    private void Start()
+    {
+        NewGame(GameMode.SinglePlayer);
+    }
+
+
     private void Update()
     {
         switch (state)
@@ -43,16 +60,15 @@ public class GameManager : MonoBehaviour
                 //Exit tutorial and start game when space bar is press down
                 if (InputManager.Instance.SpaceBarDown())
                 {
-                    state = GameState.StartTimer;
-                    OnGameStateChange?.Invoke(this, EventArgs.Empty);
+                    ChangeGameState(GameState.StartTimer);
                 }
                 break; 
             case GameState.StartTimer:
+                //Timed entrance into the game
                 startTimer -= Time.deltaTime;
                 if (startTimer <= 0)
                 {
-                    state = GameState.Playing;
-                    OnGameStateChange?.Invoke(this, EventArgs.Empty);
+                    ChangeGameState(GameState.Playing);
                 }
                 break; 
             case GameState.Playing:
@@ -61,6 +77,54 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
+
+    private void ChangeGameState(GameState newGameState)
+    {
+        state = newGameState;
+        OnGameStateChange?.Invoke(this, EventArgs.Empty);
+    }
+
+
+    public void NewGame(GameMode gameMode)
+    {
+        //ToDo: eventally the game mode will affect the set up
+        playersScores.Clear();
+        GameObject[] players_GOs = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player_GO in players_GOs)
+        {
+            Player player = player_GO.GetComponent<Player>();
+            playersScores.Add(player, 0);
+            player.PlayerReset();
+        }
+
+        ChangeGameState(GameState.Tutorial);
+    }
+
+
+    public void RetryGame()
+    {
+        //reset each player
+        List<Player> players = new List<Player>(playersScores.Keys);
+        foreach (Player player in players)
+        {
+            // reset score
+            playersScores[player] = 0;
+            //reset player
+            player.PlayerReset();
+        }
+
+        startTimer = 3f;
+        ChangeGameState(GameState.StartTimer);
+    }
+
+
+    public void UpdatePlayerScore(Player player, int score)
+    {
+        playersScores[player] += score;
+    }
+
+    #region Getter and setters
 
     public bool IsTutorial()
     {
@@ -72,20 +136,9 @@ public class GameManager : MonoBehaviour
         return state == GameState.StartTimer;
     }
 
-    public float GetStartTimer()
-    {
-        return startTimer;
-    }
-
     public bool IsGamePlaying()
     {
         return state == GameState.Playing;
-    }
-
-    public void PlayerHasFallen(Player player)
-    {
-        state = GameState.GameOver;
-        OnGameStateChange?.Invoke(this, EventArgs.Empty);
     }
 
     public bool IsGameOver()
@@ -93,8 +146,20 @@ public class GameManager : MonoBehaviour
         return state == GameState.GameOver;
     }
 
-    public int GetPlayerScore()
+    public float GetStartTimer()
     {
-        return playerScore;
+        return startTimer;
     }
+
+    public void PlayerHasFallen(Player player)
+    {
+        ChangeGameState(GameState.GameOver);
+    }
+
+    public Dictionary<Player, int> GetPlayerScores()
+    {
+        return playersScores;
+    }
+
+    #endregion
 }

@@ -7,24 +7,27 @@ public class TutorialUI : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.OnGameStateChange += GameManager_OnGameStateChange;
-
-        HandleTutorialState();
     }
 
     private void GameManager_OnGameStateChange(object sender, System.EventArgs e)
     {
-        HandleTutorialState();
-    }
-
-    private void HandleTutorialState()
-    {
         if (GameManager.Instance.IsTutorial())
         {
-            gameObject.SetActive(true);
+            Show();
         }
         else
         {
-            gameObject.SetActive(false);
+            Hide();
         }
+    }
+
+    private void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    private void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }

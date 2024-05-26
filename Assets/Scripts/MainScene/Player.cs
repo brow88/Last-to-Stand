@@ -16,11 +16,11 @@ public class Player : MonoBehaviour
     [SerializeField] private float maxStopInterval = 3f; // Maximum time between stops
 
     public float leaning = 0;  //This is between -1 (left) and +1 (right)
-    private bool playerStanding = true;
+    public bool playerStanding = true;
 
     public float baseSpeed = 0.2f;  // Base speed at which the fillAmount changes
     public float speedIncreasePerDrink = 0.05f;  // Speed increase per drink
-    public int NumberOfdrinks = 0;
+    public int NumberOfDrinks = 0;
 
     private bool isStopping = false;
     private float nextStopTime;
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     {
         if (playerStanding && GameManager.Instance.IsGamePlaying())
         {
-            HandlePlayerLeaningInput();
+            HandlePlayerInput();
 
             if (!isStopping)
             {
@@ -51,10 +51,17 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void PlayerReset()
+    {
+        leaning = 0;
+        playerStanding = true;
+        leaningMeterUI.UpdateLeaningMeter(leaning);
+    }
+
     /// <summary>
     /// Handles player input for leaning.
     /// </summary>
-    private void HandlePlayerLeaningInput()
+    private void HandlePlayerInput()
     {
         if (InputManager.Instance.LeanRightInput())
         {
@@ -64,6 +71,10 @@ public class Player : MonoBehaviour
         {
             leaning -= playerLeaningInputMultipler * Time.deltaTime;
         }
+        if (InputManager.Instance.SpaceBarDown())
+        {
+            Drink();
+        }
     }
 
     /// <summary>
@@ -72,8 +83,7 @@ public class Player : MonoBehaviour
     private void ApplySwayingPhysics()
     {
         //applied force can never be larger than player force
-        float appliedFallingForce = Math.Min(baseFallingForce + (NumberOfdrinks * speedIncreasePerDrink), playerLeaningInputMultipler);
-        
+        float appliedFallingForce = Math.Min(baseFallingForce + (NumberOfDrinks * speedIncreasePerDrink), playerLeaningInputMultipler);        
 
         // Check which way you are leaning
         if (leaning > 0)
@@ -115,12 +125,13 @@ public class Player : MonoBehaviour
 
     private void ScheduleNextStop()
     {
-        float interval = UnityEngine.Random.Range(minStopInterval, maxStopInterval) / (NumberOfdrinks + 1);
+        float interval = UnityEngine.Random.Range(minStopInterval, maxStopInterval) / (NumberOfDrinks + 1);
         nextStopTime = Time.time + interval;
     }
 
     public void Drink()
     {
-        NumberOfdrinks++;
+        NumberOfDrinks++;
+        GameManager.Instance.UpdatePlayerScore(this, 1);     //ToDo: score vary according to type of drink?!?
     }
 }
