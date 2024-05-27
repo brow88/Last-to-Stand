@@ -1,33 +1,94 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("UI")]
-    [SerializeField] LeaningMeterUI leaningMeterUI;
+    [Header("UI")] [SerializeField] LeaningMeterUI leaningMeterUI;
+    [SerializeField] QuickTimeUI quickTimeUI;
 
-    [Header("Leaning Variable")]
-    [SerializeField] private float playerLeaningInputMultipler;
+    public int NumberOfDrinks = 0;
+
+    #region Leanig / Blancing
+
+    [Header("Leaning Variable")] [SerializeField]
+    private float playerLeaningInputMultipler;
+
     [SerializeField] private float baseFallingForce;
-    [SerializeField] private float stopDuration = 0.5f;  // Duration of the stop
+    [SerializeField] private float stopDuration = 0.5f; // Duration of the stop
     [SerializeField] private float minStopInterval = 1f; // Minimum time between stops
     [SerializeField] private float maxStopInterval = 3f; // Maximum time between stops
 
-    public float leaning = 0;  //This is between -1 (left) and +1 (right)
+    public float leaning = 0; //This is between -1 (left) and +1 (right)
     public bool playerStanding = true;
 
-    public float baseSpeed = 0.2f;  // Base speed at which the fillAmount changes
-    public float speedIncreasePerDrink = 0.05f;  // Speed increase per drink
-    public int NumberOfDrinks = 0;
-
+    public float baseSpeed = 0.2f; // Base speed at which the fillAmount changes
+    public float speedIncreasePerDrink = 0.05f; // Speed increase per drink
     private bool isStopping = false;
     private float nextStopTime;
+
+    #endregion
+
+    #region QTE
+
+    [Header("Quick Time Event")] [SerializeField]
+    private float qteSpeed = 1f;
+
+    [SerializeField] private float qteMinSpeed = 0.5f;
+    [SerializeField] private float qteMaxSpeed = 2f;
+    [SerializeField] private float qteHitWindow = 0.04f; // How close to the target the player needs to be
+    private bool isQTEActive = false;
+    private float qteMarkerPosition = 0f;
+    private bool qteMovingRight = true;
+    private float qteTargetPosition = 0.5f;
+    public event Action<float> OnQTargetUpdate; // Event to set target in UI
+    public event Action<float> OnQTEUpdate; // Event to update UI
+    public event Action<bool> OnQTEHitOrMiss;
+    [SerializeField] private float QteCollectTimeInSec = 0.1f;
+    [SerializeField] private float QteCooldowTimeInSec = 0.2f;
+    [SerializeField] private int QteNumberOfTries = 3;
+     private int QteNumberOfTriesReset;
+
+    private bool isQteAllowed = true;
+    private bool isQteRecording = true;
+    private DateTime startQteCollect;
+    private DateTime startQteCooldown;
+    private List<float> qteCollect;
+    #endregion
+
+    #region Drinking
+
+    private bool hasDrink;
+
+    #endregion
+
 
     private void Start()
     {
         ScheduleNextStop();
+        //todo debug
+        StartQTE();
+        QteNumberOfTriesReset = QteNumberOfTries;
+    }
+
+    private void Awake()
+    {
+        if (quickTimeUI != null)
+        {
+            OnQTEUpdate += quickTimeUI.UpdateQTE;
+            OnQTargetUpdate += quickTimeUI.SetQTargetPosition;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (quickTimeUI != null)
+        {
+            OnQTEUpdate -= quickTimeUI.UpdateQTE;
+            OnQTargetUpdate -= quickTimeUI.SetQTargetPosition;
+        }
     }
 
     private void FixedUpdate()
@@ -48,6 +109,11 @@ public class Player : MonoBehaviour
 
             CheckIfPlayerHasFallen();
             CheckForStop();
+
+            if (isQTEActive)
+            {
+                HandleQTE();
+            }
         }
     }
 
@@ -67,15 +133,19 @@ public class Player : MonoBehaviour
         {
             leaning += playerLeaningInputMultipler * Time.deltaTime;
         }
+
         if (InputManager.Instance.LeanLeftInput())
         {
             leaning -= playerLeaningInputMultipler * Time.deltaTime;
         }
+
         if (InputManager.Instance.SpaceBarDown())
         {
             Drink();
         }
     }
+
+    #region Balance / sway
 
     /// <summary>
     /// Simulate the player leaning more towards the current direction
@@ -83,7 +153,8 @@ public class Player : MonoBehaviour
     private void ApplySwayingPhysics()
     {
         //applied force can never be larger than player force
-        float appliedFallingForce = Math.Min(baseFallingForce + (NumberOfDrinks * speedIncreasePerDrink), playerLeaningInputMultipler);        
+        float appliedFallingForce = Math.Min(baseFallingForce + (NumberOfDrinks * speedIncreasePerDrink),
+            playerLeaningInputMultipler);
 
         // Check which way you are leaning
         if (leaning > 0)
@@ -129,9 +200,123 @@ public class Player : MonoBehaviour
         nextStopTime = Time.time + interval;
     }
 
+    #endregion
+
+    #region Drinking
+
+    public void GotDrink()
+    {
+        hasDrink = true;
+    }
+
     public void Drink()
     {
+        if (!hasDrink) //todo maybe VO line "How am I suppose to drink without a drink"?
+            return;
+
         NumberOfDrinks++;
-        GameManager.Instance.UpdatePlayerScore(this, 1);     //ToDo: score vary according to type of drink?!?
+        GameManager.Instance.UpdatePlayerScore(this, 1); //ToDo: score vary according to type of drink?!?
     }
+
+    #endregion
+
+
+
+
+    #region QTE
+
+    private void HandleQTE()
+    {
+        // Move the QTE marker
+        if (qteMovingRight)
+        {
+            qteMarkerPosition += qteSpeed * Time.deltaTime;
+            if (qteMarkerPosition >= 1f)
+            {
+                qteMarkerPosition = 1f;
+                qteMovingRight = false;
+            }
+        }
+        else
+        {
+            qteMarkerPosition -= qteSpeed * Time.deltaTime;
+            if (qteMarkerPosition <= 0f)
+            {
+                qteMarkerPosition = 0f;
+                qteMovingRight = true;
+            }
+        }
+
+        // Send QTE update to the UI
+        OnQTEUpdate?.Invoke(qteMarkerPosition);
+
+        // Check for player input
+        if (InputManager.Instance.QuickTimeInput() && isQteAllowed)
+        {
+            if (!isQteRecording)
+            {
+                startQteCollect = DateTime.Now;
+                qteCollect.Clear();
+                isQteRecording = true;
+            }
+
+            if ((DateTime.Now - startQteCollect).TotalSeconds >= QteCollectTimeInSec)
+            {
+                //todo check results
+                if (qteCollect.Any(distance => distance <= qteHitWindow))
+                {
+                    // Player successfully hit the target
+                    Debug.Log($"QTE Success!");
+                    EndQTE();
+                    OnQTEHitOrMiss?.Invoke(true);
+                }
+                else
+                {
+                    // Player missed the target
+                    //todo this seems to trigger mutliple times, better way to check?
+                    Debug.Log($"QTE Fail!");
+                    OnQTEHitOrMiss?.Invoke(false);
+                    if (--QteNumberOfTries <=0)
+                    {
+                        //fail too many times, what now?
+
+                    }
+                }
+                isQteRecording = false;
+                isQteAllowed = false;
+                startQteCooldown = DateTime.Now;
+
+            }
+            var distance = Mathf.Abs(qteMarkerPosition - qteTargetPosition);
+            qteCollect.Add(distance);
+        }
+        else
+        {
+            if (!isQteAllowed && (DateTime.Now - startQteCooldown).TotalSeconds >= QteCooldowTimeInSec)
+            {
+                isQteAllowed = true;
+            }
+            isQteRecording = false;
+        }
+    }
+
+    public void StartQTE()
+    {
+        qteCollect = new List<float>();
+        QteNumberOfTries = QteNumberOfTriesReset;
+        isQteAllowed = true;
+        isQTEActive = true;
+        qteMarkerPosition = 0f;
+        qteMovingRight = true;
+        qteSpeed = UnityEngine.Random.Range(qteMinSpeed, qteMaxSpeed);
+        qteTargetPosition = UnityEngine.Random.Range(0.1f, 0.9f); // Random target position within the bar
+        OnQTargetUpdate?.Invoke(qteTargetPosition);
+    }
+
+    public void EndQTE()
+    {
+        isQTEActive = false;
+    }
+
+    #endregion
 }

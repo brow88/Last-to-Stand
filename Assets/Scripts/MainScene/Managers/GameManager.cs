@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour
         return state == GameState.Playing;
     }
 
-    public bool IsGameOver()
+   public bool IsGameOver()
     {
         return state == GameState.GameOver;
     }

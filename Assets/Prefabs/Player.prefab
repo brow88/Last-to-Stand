@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7924228688643670196
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4320275085212667457}
+  - component: {fileID: 6085307958246842779}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4320275085212667457
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7924228688643670196}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6085307958246842779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7924228688643670196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 219e07a01f918e948bced7e376995879, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leaningMeterUI: {fileID: 0}
+  quickTimeUI: {fileID: 0}
+  NumberOfDrinks: 0
+  playerLeaningInputMultipler: 0.5
+  baseFallingForce: 0
+  stopDuration: 0.5
+  minStopInterval: 1
+  maxStopInterval: 3
+  leaning: 0
+  playerStanding: 1
+  baseSpeed: 0.1
+  speedIncreasePerDrink: 0.05
+  qteSpeed: 1
+  qteMinSpeed: 0.5
+  qteMaxSpeed: 2
+  qteHitWindow: 0.02
+  QteCollectTimeInSec: 0.05
+  QteCooldowTimeInSec: 0.2
+  QteNumberOfTries: 3

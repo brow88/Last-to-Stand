@@ -39,6 +39,24 @@ public class InputManager : MonoBehaviour
         return false;
     }
 
+    public bool QuickTimeInput()
+    {
+        if (Input.GetKey(KeyCode.S))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool CatchGlassInput()
+    {
+        if (Input.GetKey(KeyCode.E))
+        {
+            return true;
+        }
+        return false;
+    }
+
 
     //Used for both exit tutorial and to drink
     public bool SpaceBarDown()
