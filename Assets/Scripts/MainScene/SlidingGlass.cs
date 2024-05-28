@@ -24,6 +24,7 @@ public class SlidingGlass : MonoBehaviour
         transform.position = moveToStart ? startPosition.position : endPosition.position;
         targetPosition = moveToStart ? endPosition.position : startPosition.position;
         isMoving = true;
+        gameObject.PlaySound(SoundManager.Instance.FindClip("GlassSlide"));
     }
 
     private void Update()
@@ -83,6 +84,7 @@ public class SlidingGlass : MonoBehaviour
         if (!isCaught)
         {
             Debug.Log("Glass fell on the floor! get ready to be slapped!");
+            gameObject.PlaySound(SoundManager.Instance.FindClip("GlassBreak"));
             Bartender.Instance.NotifyThatPlayerDroppedGlass(player);
         }
     }

@@ -44,6 +44,7 @@ public class Bartender : MonoBehaviour
     public void ServeDrink()
     {
         Debug.Log(" Bartender is serving Drink");
+        
     }
 
     private void ScheduleNextDrink()
@@ -55,5 +56,12 @@ public class Bartender : MonoBehaviour
     public void NotifyThatPlayerDroppedGlass(Player player)
     {
         Debug.Log("Bartender is angry!");
+        StartCoroutine(WalkOverAndSlap(3f));
+    }
+
+    private IEnumerator WalkOverAndSlap(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        gameObject.PlaySound(SoundManager.Instance.FindClip("Slap"), 1f);
     }
 }
