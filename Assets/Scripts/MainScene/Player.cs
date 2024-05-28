@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
 
     public int NumberOfDrinks = 0;
 
-    #region Leanig / Blancing
+    #region Leaning / Balancing
 
     [Header("Leaning Variable")] [SerializeField]
     private float playerLeaningInputMultipler;
@@ -273,7 +273,7 @@ public class Player : MonoBehaviour
                 else
                 {
                     // Player missed the target
-                    //todo this seems to trigger mutliple times, better way to check?
+                    //todo this seems to trigger multiple times, better way to check?
                     Debug.Log($"QTE Fail!");
                     OnQTEHitOrMiss?.Invoke(false);
                     if (--QteNumberOfTries <=0)
