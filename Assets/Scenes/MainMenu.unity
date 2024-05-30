@@ -1551,7 +1551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7352989149036341301, guid: ce91a3d2c4423434db0853a07671d837, type: 3}
       propertyPath: m_Name
-      value: NoiseManager 1
+      value: NoiseManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
