@@ -70,7 +70,7 @@ public class Player : MonoBehaviour
     {
         ScheduleNextStop();
         //todo debug
-        StartQTE();
+       
         QteNumberOfTriesReset = QteNumberOfTries;
     }
 
@@ -150,7 +150,7 @@ public class Player : MonoBehaviour
 
     public void Slapped()
     {
-        var slapForce = Random.value * 0.35;
+        var slapForce = Random.Range(0.25f,0.35f);
         var isLeft = Random.Range(0, 10) > 5;
         if (isLeft)
         {
@@ -236,6 +236,7 @@ public class Player : MonoBehaviour
         if (NumberOfDrinks % 3 == 0)
         {
             quickTimeUI.gameObject.SetActive(true);
+            StartQTE();
         }
     }
 
@@ -337,6 +338,7 @@ public class Player : MonoBehaviour
     public void EndQTE()
     {
         isQTEActive = false;
+        quickTimeUI.gameObject.SetActive(false);
     }
 
     #endregion
