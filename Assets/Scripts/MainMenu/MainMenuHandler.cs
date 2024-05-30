@@ -1,75 +1,135 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 using System;
 using UnityEngine.SceneManagement;
 
 public class MainMenuHandler : MonoBehaviour
 {
-    [SerializeField] GameObject buttonsPanel;
-    [SerializeField] GameObject optionsPanel;
+    [Header("Panels")]
+    [SerializeField] private GameObject mainMenuPanel;
+    [SerializeField] private GameObject leaderBoardPanel;
+    [SerializeField] private GameObject optionsPanel;
+    [SerializeField] private GameObject fadeOutPanel;
 
-    [SerializeField] Button startButton;
-    [SerializeField] Button optionsButton;
-    [SerializeField] Button quitButton;
+    [Header("Main Menu")]
+    [SerializeField] private Button startButton;
+    [SerializeField] private Button leaderBoardButton;
+    [SerializeField] private Button optionsButton;
+    [SerializeField] private Button quitButton;
 
-    [SerializeField] GameObject fadeOutPanel;
+    [Header("Leader Board")]
+    [SerializeField] private Button leaderBoardReturnButton;
+
     [Header("Options")]
-    [SerializeField] Button returnButton;
+    [SerializeField] private Button optionsReturnButton;
 
-    Image fadeOutImage;
-    public float fadeOutDuration = 1;
-    public float fadeOutImgAlpha = 100f;
+    [Header("Fade Out")]
+    private Image fadeOutImage;
+    [SerializeField] private float fadeOutDuration = 1;
+    [SerializeField] private float fadeOutImgAlpha = 100f;
 
-    void Start()
+
+
+    private void Awake()
     {
-        fadeOutPanel.SetActive(true);
-        optionsPanel.SetActive(false);
         fadeOutImage = fadeOutPanel.GetComponent<Image>();
+    }
 
-        Time.timeScale = 1f; // in case we want to add pause menu in game and need to set timeScale to 0
+
+    private void Start()
+    {
+        ButtonsListeners();
+
+        StartingGamePanelsSetup();
 
         StartCoroutine(FadeInOut());
-
-        startButton.onClick.AddListener(delegate { StartGame(); });
-        optionsButton.onClick.AddListener(delegate { Options(); });
-        quitButton.onClick.AddListener(delegate { QuitGame(); });
-        returnButton.onClick.AddListener(delegate
-        {
-            optionsPanel.SetActive(false);
-            buttonsPanel.SetActive(true);
-        });
-
-        buttonsPanel.SetActive(true);
+        
+        Time.timeScale = 1f; // in case we want to add pause menu in game and need to set timeScale to 0
     }
 
-    void StartGame()
+    #region Buttons
+
+    private void ButtonsListeners()
+    {
+        //Ensures all the listeners are active in scene (the appropriate ones are turned off by StartingGamePanelsSetup() )
+        mainMenuPanel.SetActive(true);
+        leaderBoardPanel.SetActive(true);
+        optionsPanel.SetActive(true);
+
+        //Main menu
+        startButton.onClick.AddListener(StartGame);
+        leaderBoardButton.onClick.AddListener(LeaderBoard);
+        optionsButton.onClick.AddListener(Options);
+        quitButton.onClick.AddListener(QuitGame);
+
+        //Leader board
+        leaderBoardReturnButton.onClick.AddListener(MainMenu);
+
+        //Options
+        optionsReturnButton.onClick.AddListener(MainMenu);
+    }
+
+
+    private void StartGame()
     {
         SceneManager.LoadScene(1);
-               
     }
 
-    IEnumerator FadeInOut()
+
+    private void MainMenu()
     {
-        for (int i = 100; i>0; i--)
+        mainMenuPanel.SetActive(true);
+        leaderBoardPanel.SetActive(false);
+        optionsPanel.SetActive(false);
+    }
+
+
+    private void LeaderBoard()
+    {
+        mainMenuPanel.SetActive(false);
+        leaderBoardPanel.SetActive(true);
+        optionsPanel.SetActive(false);
+
+        leaderBoardPanel.GetComponent<LeaderBoard>().CreateLeaderBoard();
+    }
+
+
+    private void Options()
+    {
+        mainMenuPanel.SetActive(false);
+        leaderBoardPanel.SetActive(false);
+        optionsPanel.SetActive(true);
+    }
+
+
+    private void QuitGame()
+    {
+        PlayerPrefs.Save();
+        Application.Quit();
+    }
+
+    #endregion
+
+
+    private void StartingGamePanelsSetup()
+    {
+        mainMenuPanel.SetActive(true);
+        leaderBoardPanel.SetActive(false);
+        optionsPanel.SetActive(false);
+        fadeOutPanel.SetActive(true);
+    }
+
+
+    private IEnumerator FadeInOut()
+    {
+        for (int i = 100; i > 0; i--)
         {
-            yield return new WaitForSeconds(fadeOutDuration*0.05f);
+            yield return new WaitForSeconds(fadeOutDuration * 0.05f);
             fadeOutImgAlpha = i / 100f;
             fadeOutImage.color = new Color(0f, 0f, 0f, fadeOutImgAlpha);
         }
     }
 
-    void Options()
-    {
-        buttonsPanel.SetActive(false);
-        optionsPanel.SetActive(true);
-    }
-
-    void QuitGame()
-    {
-        PlayerPrefs.Save();
-        Application.Quit();
-    }
 }

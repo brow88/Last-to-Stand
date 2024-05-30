@@ -62,7 +62,14 @@ public class LeaderBoard : MonoBehaviour
 
     #region Creating Leader Board
 
-    public IEnumerator CreateLeaderBoard()
+
+    public void CreateLeaderBoard()
+    {
+        StartCoroutine(CreateLeaderBoardCoroutine());
+    }
+
+
+    private IEnumerator CreateLeaderBoardCoroutine()
     {
         //Update the current leader board list
         yield return DownloadLeaderBoard();
@@ -84,7 +91,13 @@ public class LeaderBoard : MonoBehaviour
     }
 
 
-    public IEnumerator CreateLeaderBoardWithNewEntry(LeaderBoardEntry newEntry)
+    public void CreateLeaderBoardWithNewEntry(LeaderBoardEntry newEntry)
+    {
+        StartCoroutine(CreateLeaderBoardWithNewEntryCoroutine(newEntry));
+    }
+
+
+    private IEnumerator CreateLeaderBoardWithNewEntryCoroutine(LeaderBoardEntry newEntry)
     {
         //Update the current leader board list
         yield return DownloadLeaderBoard();
@@ -154,7 +167,7 @@ public class LeaderBoard : MonoBehaviour
     private IEnumerator SubmitPlayerNameCoroutine(LeaderBoardEntry entry)
     {
         yield return StartCoroutine(UploadNewScore(entry.PlayerName, entry.Score));
-        StartCoroutine(CreateLeaderBoard());
+        StartCoroutine(CreateLeaderBoardCoroutine());
     }
 
     public void ScrollToRowEntry(int rowEntry)
