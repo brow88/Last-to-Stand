@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
     private float qteSpeed = 1f;
 
     [SerializeField] private float qteMinSpeed = 0.5f;
-    [SerializeField] private float qteMaxSpeed = 2f;
+    [SerializeField] private float qteMaxSpeed = 0.9f;
     [SerializeField] private float qteHitWindow = 0.04f; // How close to the target the player needs to be
     private bool isQTEActive = false;
     private float qteMarkerPosition = 0f;
@@ -56,6 +56,8 @@ public class Player : MonoBehaviour
     private bool isQteRecording = true;
     private DateTime startQteCollect;
     private DateTime startQteCooldown;
+    private DateTime startQteEvent;
+
     private List<float> qteCollect;
     #endregion
 
@@ -249,6 +251,13 @@ public class Player : MonoBehaviour
 
     private void HandleQTE()
     {
+        if ((DateTime.Now - startQteEvent).TotalSeconds > 10)
+        {
+            Vomit();
+            EndQTE();
+            return;
+        }
+
         // Move the QTE marker
         if (qteMovingRight)
         {
@@ -301,7 +310,8 @@ public class Player : MonoBehaviour
                     if (--QteNumberOfTries <=0)
                     {
                         //fail too many times, what now?
-
+                        Vomit();
+                        EndQTE();
                     }
                 }
                 isQteRecording = false;
@@ -322,6 +332,20 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void Vomit()
+    {
+        var vomitForce = Random.Range(0.3f, 0.4f);
+        var isLeft = Random.Range(0, 10) > 5;
+        if (isLeft)
+        {
+            leaning -= (float)vomitForce;
+        }
+        else
+        {
+            leaning += (float)vomitForce;
+        }
+    }
+
     public void StartQTE()
     {
         qteCollect = new List<float>();
@@ -333,12 +357,15 @@ public class Player : MonoBehaviour
         qteSpeed = UnityEngine.Random.Range(qteMinSpeed, qteMaxSpeed);
         qteTargetPosition = UnityEngine.Random.Range(0.1f, 0.9f); // Random target position within the bar
         OnQTargetUpdate?.Invoke(qteTargetPosition);
+        startQteEvent = DateTime.Now;
     }
 
     public void EndQTE()
     {
         isQTEActive = false;
         quickTimeUI.gameObject.SetActive(false);
+        qteMinSpeed += 0.05f;
+        qteMaxSpeed += 0.05f;
     }
 
     #endregion

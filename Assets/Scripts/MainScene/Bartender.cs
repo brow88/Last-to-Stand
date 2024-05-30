@@ -7,9 +7,14 @@ public class Bartender : MonoBehaviour
     public static Bartender Instance;
 
     [SerializeField] private float minIntervalServing = 5f;
-    [SerializeField] private GameObject glass;
     [SerializeField] private float maxIntervalServing = 10f;
     private float nextDrinkServingTime;
+    [SerializeField] private GameObject glass;
+
+    
+
+    [SerializeField] private float startMinGlassSpeed = 60f;
+    [SerializeField] private float startMaxGlassSpeed = 90f;
     [SerializeField] private Player Player1;
    private void Awake()
     {
@@ -52,7 +57,7 @@ public class Bartender : MonoBehaviour
         glassProperties.EndPosition = GlassManager.Instance.EndPositionPlayer1;
         glassProperties.CatchPosition = GlassManager.Instance.CatchPositionPlayer1;
         glassProperties.Player = player;
-        glassProperties.Speed = UnityEngine.Random.Range(60, 90);
+        glassProperties.Speed = UnityEngine.Random.Range(startMinGlassSpeed, startMaxGlassSpeed);
         glassProperties.SetReady();
     }
 
@@ -60,6 +65,8 @@ public class Bartender : MonoBehaviour
     {
         float interval = UnityEngine.Random.Range(minIntervalServing, maxIntervalServing);
         nextDrinkServingTime = Time.time + interval;
+        startMinGlassSpeed++;
+        startMaxGlassSpeed++;
     }
 
     public void NotifyThatPlayerDroppedGlass(Player player)
