@@ -231,7 +231,7 @@ public class Player : MonoBehaviour
     {
         if (!hasDrink) //todo maybe VO line "How am I suppose to drink without a drink"?
             return;
-
+        hasDrink = false;
         NumberOfDrinks++;
         GameManager.Instance.UpdatePlayerScore(this, 1); //ToDo: score vary according to type of drink?!?
 
