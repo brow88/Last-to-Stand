@@ -366,6 +366,9 @@ public class Player : MonoBehaviour
         quickTimeUI.gameObject.SetActive(false);
         qteMinSpeed += 0.05f;
         qteMaxSpeed += 0.05f;
+        qteMinSpeed = Math.Min(qteMinSpeed, 1.8f);
+        qteMaxSpeed = Math.Min(qteMaxSpeed, 2.1f);
+
     }
 
     #endregion

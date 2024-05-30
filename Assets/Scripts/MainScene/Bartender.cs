@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,6 +68,10 @@ public class Bartender : MonoBehaviour
         nextDrinkServingTime = Time.time + interval;
         startMinGlassSpeed++;
         startMaxGlassSpeed++;
+
+        startMinGlassSpeed = Math.Min(startMinGlassSpeed, 100f);
+        startMaxGlassSpeed = Math.Min(startMaxGlassSpeed, 150f);
+
     }
 
     public void NotifyThatPlayerDroppedGlass(Player player)
