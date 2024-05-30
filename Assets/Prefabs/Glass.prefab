@@ -32,7 +32,7 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -51,10 +51,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8955e2a6f660749479637f6f37777f7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPosition: {fileID: 0}
-  endPosition: {fileID: 0}
-  catchPosition: {fileID: 0}
-  speed: 2
+  StartPosition: {fileID: 0}
+  EndPosition: {fileID: 0}
+  CatchPosition: {fileID: 0}
+  speed: 50
   CatchRadius: 1
   moveToStart: 1
   player: {fileID: 0}

@@ -7,6 +7,7 @@ public class Bartender : MonoBehaviour
     public static Bartender Instance;
 
     [SerializeField] private float minIntervalServing = 5f;
+    [SerializeField] private GameObject glass;
     [SerializeField] private float maxIntervalServing = 10f;
     private float nextDrinkServingTime;
     private void Awake()
@@ -44,7 +45,12 @@ public class Bartender : MonoBehaviour
     public void ServeDrink()
     {
         Debug.Log(" Bartender is serving Drink");
-        
+        var newGlass =Instantiate(glass, GlassManager.Instance.GetPlayer1EndPos(),GlassManager.Instance.StartPositionPlayer1.rotation);
+        var glassProperties = newGlass.GetComponent<SlidingGlass>();
+        glassProperties.StartPosition = GlassManager.Instance.StartPositionPlayer1;
+        glassProperties.EndPosition = GlassManager.Instance.EndPositionPlayer1;
+        glassProperties.CatchPosition = GlassManager.Instance.CatchPositionPlayer1;
+        glassProperties.SetReady();
     }
 
     private void ScheduleNextDrink()

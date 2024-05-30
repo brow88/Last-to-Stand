@@ -1,12 +1,13 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SlidingGlass : MonoBehaviour
 {
-    [Header("Positions")]
-    [SerializeField] private Transform startPosition;
-    [SerializeField] private Transform endPosition;
-    [SerializeField] private Transform catchPosition;
+    [FormerlySerializedAs("startPosition")] [Header("Positions")]
+    public Transform StartPosition;
+    public Transform EndPosition;
+    public Transform CatchPosition;
 
     [Header("Settings")]
     [SerializeField] private float speed = 2.0f;
@@ -18,17 +19,27 @@ public class SlidingGlass : MonoBehaviour
     private bool isCaught = false;
     private bool isMoving = false;
 
+    private bool isReady = false;
+
     private void Start()
     {
+       
+    }
+
+    public void SetReady()
+    {
+        isReady = true;
         // Set the initial position based on the moveToStart flag
-        transform.position = moveToStart ? startPosition.position : endPosition.position;
-        targetPosition = moveToStart ? endPosition.position : startPosition.position;
+        transform.position = moveToStart ? StartPosition.position : EndPosition.position;
+        targetPosition = moveToStart ? EndPosition.position : StartPosition.position;
         isMoving = true;
         gameObject.PlaySound(SoundManager.Instance.FindClip("GlassSlide"));
     }
 
     private void Update()
     {
+        if (!isReady)
+            return;
         if (isMoving && !isCaught)
         {
             MoveGlass();
@@ -59,7 +70,7 @@ public class SlidingGlass : MonoBehaviour
     private void TryCatchGlass()
     {
         // Check if the glass is at the catch position
-        var distanceToCatch = Vector3.Distance(transform.position, catchPosition.position);
+        var distanceToCatch = Vector3.Distance(transform.position, CatchPosition.position);
         if (distanceToCatch < CatchRadius) 
         {
             isCaught = true;
@@ -84,6 +95,7 @@ public class SlidingGlass : MonoBehaviour
         if (!isCaught)
         {
             Debug.Log("Glass fell on the floor! get ready to be slapped!");
+            gameObject.GetComponent<SpriteRenderer>().sprite = null;
             gameObject.PlaySound(SoundManager.Instance.FindClip("GlassBreak"));
             Bartender.Instance.NotifyThatPlayerDroppedGlass(player);
         }
@@ -94,7 +106,7 @@ public class SlidingGlass : MonoBehaviour
         // Reset the glass to the initial state
         isCaught = false;
         isMoving = true;
-        transform.position = moveToStart ? startPosition.position : endPosition.position;
-        targetPosition = moveToStart ? endPosition.position : startPosition.position;
+        transform.position = moveToStart ? StartPosition.position : EndPosition.position;
+        targetPosition = moveToStart ? EndPosition.position : StartPosition.position;
     }
 }
