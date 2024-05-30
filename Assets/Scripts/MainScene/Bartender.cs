@@ -10,7 +10,8 @@ public class Bartender : MonoBehaviour
     [SerializeField] private GameObject glass;
     [SerializeField] private float maxIntervalServing = 10f;
     private float nextDrinkServingTime;
-    private void Awake()
+    [SerializeField] private Player Player1;
+   private void Awake()
     {
         if (Instance == null)
         {
@@ -37,12 +38,12 @@ public class Bartender : MonoBehaviour
         //randomly serve a new glass every X Seconds
         if (Time.time >= nextDrinkServingTime)
         {
-            ServeDrink();
+            ServeDrink(Player1);
             ScheduleNextDrink();
         }
     }
 
-    public void ServeDrink()
+    public void ServeDrink(Player player)
     {
         Debug.Log(" Bartender is serving Drink");
         var newGlass =Instantiate(glass, GlassManager.Instance.GetPlayer1EndPos(),GlassManager.Instance.StartPositionPlayer1.rotation);
@@ -50,6 +51,8 @@ public class Bartender : MonoBehaviour
         glassProperties.StartPosition = GlassManager.Instance.StartPositionPlayer1;
         glassProperties.EndPosition = GlassManager.Instance.EndPositionPlayer1;
         glassProperties.CatchPosition = GlassManager.Instance.CatchPositionPlayer1;
+        glassProperties.Player = player;
+        glassProperties.Speed = UnityEngine.Random.Range(60, 90);
         glassProperties.SetReady();
     }
 
@@ -62,12 +65,13 @@ public class Bartender : MonoBehaviour
     public void NotifyThatPlayerDroppedGlass(Player player)
     {
         Debug.Log("Bartender is angry!");
-        StartCoroutine(WalkOverAndSlap(3f));
+        StartCoroutine(WalkOverAndSlap(3f,player));
     }
 
-    private IEnumerator WalkOverAndSlap(float delay)
+    private IEnumerator WalkOverAndSlap(float delay, Player player)
     {
         yield return new WaitForSeconds(delay);
         gameObject.PlaySound(SoundManager.Instance.FindClip("Slap"), 1f);
+        player.Slapped();
     }
 }

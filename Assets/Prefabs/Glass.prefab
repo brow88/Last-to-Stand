@@ -55,7 +55,7 @@ MonoBehaviour:
   EndPosition: {fileID: 0}
   CatchPosition: {fileID: 0}
   speed: 50
-  CatchRadius: 1
+  CatchRadius: 20
   moveToStart: 1
   player: {fileID: 0}
 --- !u!222 &4283219968065620829

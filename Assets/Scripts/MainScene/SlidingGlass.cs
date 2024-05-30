@@ -10,10 +10,10 @@ public class SlidingGlass : MonoBehaviour
     public Transform CatchPosition;
 
     [Header("Settings")]
-    [SerializeField] private float speed = 2.0f;
+    public float Speed = 50.0f;
     [SerializeField] private float CatchRadius = 1.0f;
     [SerializeField] private bool moveToStart = true;
-    [SerializeField] private Player player;
+    public Player Player;
 
     private Vector3 targetPosition;
     private bool isCaught = false;
@@ -55,7 +55,7 @@ public class SlidingGlass : MonoBehaviour
     {
 
         // Move the glass towards the target position
-        var newPos = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        var newPos = Vector3.MoveTowards(transform.position, targetPosition, Speed * Time.deltaTime);
         transform.position = newPos;
 
         // Check if the glass has reached the end position
@@ -86,7 +86,7 @@ public class SlidingGlass : MonoBehaviour
     private void OnGlassCaught()
     {
         Debug.Log("Glass Caught! -> give it to the player");
-        player.GotDrink();
+        Player.GotDrink();
         Destroy(this.gameObject);
     }
 
@@ -97,7 +97,7 @@ public class SlidingGlass : MonoBehaviour
             Debug.Log("Glass fell on the floor! get ready to be slapped!");
             gameObject.GetComponent<SpriteRenderer>().sprite = null;
             gameObject.PlaySound(SoundManager.Instance.FindClip("GlassBreak"));
-            Bartender.Instance.NotifyThatPlayerDroppedGlass(player);
+            Bartender.Instance.NotifyThatPlayerDroppedGlass(Player);
         }
     }
 

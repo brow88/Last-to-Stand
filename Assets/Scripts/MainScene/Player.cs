@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
@@ -91,7 +92,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (playerStanding && GameManager.Instance.IsGamePlaying())
         {
@@ -145,7 +146,22 @@ public class Player : MonoBehaviour
         }
     }
 
-    #region Balance / sway
+    #region Balance / sway / Slap
+
+    public void Slapped()
+    {
+        var slapForce = Random.value * 0.35;
+        var isLeft = Random.Range(0, 10) > 5;
+        if (isLeft)
+        {
+            leaning -= (float)slapForce;
+        }
+        else
+        {
+            leaning += (float)slapForce;
+        }
+     
+    }
 
     /// <summary>
     /// Simulate the player leaning more towards the current direction
@@ -216,11 +232,16 @@ public class Player : MonoBehaviour
 
         NumberOfDrinks++;
         GameManager.Instance.UpdatePlayerScore(this, 1); //ToDo: score vary according to type of drink?!?
+
+        if (NumberOfDrinks % 3 == 0)
+        {
+            quickTimeUI.gameObject.SetActive(true);
+        }
     }
 
     #endregion
 
-
+    
 
 
     #region QTE
