@@ -5,6 +5,7 @@ public class QuickTimeUI : MonoBehaviour
 {
     [SerializeField] private Image qteMarker;
     [SerializeField] private Image qteTarget;
+    [SerializeField] private Image qteTargetClose;
     [SerializeField] private RectTransform qteBar;
 
     private float qteBarWidth;
@@ -25,7 +26,8 @@ public class QuickTimeUI : MonoBehaviour
     public void SetQTargetPosition(float targetPosition)
     {
         qteTargetPosition = targetPosition;
-        qteTarget.rectTransform.anchoredPosition = GetCenteredPosition(targetPosition, qteTarget.rectTransform);
+        qteTarget.rectTransform.anchoredPosition = GetCenteredPosition(targetPosition, qteTarget.rectTransform); ;
+        qteTargetClose.rectTransform.anchoredPosition = qteTarget.rectTransform.anchoredPosition; // Align to the same position
     }
 
     private void SetQTEPosition(float markerPosition)
@@ -36,7 +38,7 @@ public class QuickTimeUI : MonoBehaviour
     private Vector2 GetCenteredPosition(float normalizedPosition, RectTransform rectTransform)
     {
         var position = Mathf.Clamp01(normalizedPosition); // Ensure position is within [0, 1]
-        var offsetX = position * (qteBarWidth - rectTransform.rect.width) - (qteBar.rect.width/2);
+        var offsetX = position * (qteBar.rect.width - rectTransform.rect.width) - (qteBar.rect.width / 2);
         return new Vector2(offsetX, rectTransform.anchoredPosition.y);
     }
 }

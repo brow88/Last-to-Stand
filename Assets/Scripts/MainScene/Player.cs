@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] QuickTimeUI quickTimeUI;
 
     public int NumberOfDrinks = 0;
+    public int DrunkLevel = 0;
 
     #region Leaning / Balancing
 
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float qteMinSpeed = 0.5f;
     [SerializeField] private float qteMaxSpeed = 0.9f;
     [SerializeField] private float qteHitWindow = 0.04f; // How close to the target the player needs to be
+    [SerializeField] private float qteCloseHitWindow = 0.04f; // How close to the target the player needs to be to still be close
     private bool isQTEActive = false;
     private float qteMarkerPosition = 0f;
     private bool qteMovingRight = true;
@@ -50,6 +52,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float QteCollectTimeInSec = 0.1f;
     [SerializeField] private float QteCooldowTimeInSec = 0.2f;
     [SerializeField] private int QteNumberOfTries = 3;
+
+    [SerializeField] private int QteFailedRaisesDrunkBy = 20;
+    [SerializeField] private int QteOkRaisesDrunkBy = 10;
+    [SerializeField] private int QteerfectRaisesDrunkBy = 0;
      private int QteNumberOfTriesReset;
 
     private bool isQteAllowed = true;
@@ -71,8 +77,6 @@ public class Player : MonoBehaviour
     private void Start()
     {
         ScheduleNextStop();
-        //todo debug
-       
         QteNumberOfTriesReset = QteNumberOfTries;
     }
 
@@ -116,6 +120,11 @@ public class Player : MonoBehaviour
             if (isQTEActive)
             {
                 HandleQTE();
+            }
+
+            if (DrunkLevel >= 100)
+            {
+                GameManager.Instance.PlayerHasFallen(this);
             }
         }
     }
@@ -233,6 +242,7 @@ public class Player : MonoBehaviour
             return;
         hasDrink = false;
         NumberOfDrinks++;
+        DrunkLevel++;
         GameManager.Instance.UpdatePlayerScore(this, 1); //ToDo: score vary according to type of drink?!?
 
         if (NumberOfDrinks % 3 == 0)
@@ -243,9 +253,6 @@ public class Player : MonoBehaviour
     }
 
     #endregion
-
-    
-
 
     #region QTE
 
@@ -297,7 +304,16 @@ public class Player : MonoBehaviour
                 if (qteCollect.Any(distance => distance <= qteHitWindow))
                 {
                     // Player successfully hit the target
-                    Debug.Log($"QTE Success!");
+                    Debug.Log($"QTE Success! (perfect)");
+                    DrunkLevel += QteerfectRaisesDrunkBy;
+                    EndQTE();
+                    OnQTEHitOrMiss?.Invoke(true);
+                }
+                if (qteCollect.Any(distance => distance <= qteCloseHitWindow))
+                {
+                    // Player successfully hit the target
+                    Debug.Log($"QTE Success! (ok)");
+                    DrunkLevel += QteOkRaisesDrunkBy;
                     EndQTE();
                     OnQTEHitOrMiss?.Invoke(true);
                 }
@@ -310,7 +326,7 @@ public class Player : MonoBehaviour
                     if (--QteNumberOfTries <=0)
                     {
                         //fail too many times, what now?
-                        Vomit();
+                        DrunkLevel+=QteFailedRaisesDrunkBy;
                         EndQTE();
                     }
                 }
