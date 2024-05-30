@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameOverUI : MonoBehaviour
 {
+    [Header("single player")]
+    [SerializeField] private GameObject leaderBoard;
+
+    [Header("multi-player")]
     [SerializeField] private Transform scoreContainer;
     [SerializeField] private GameObject scoreTextPrefab;
 
@@ -17,7 +22,7 @@ public class GameOverUI : MonoBehaviour
     {
         mainMenuButton.onClick.AddListener(() =>
         {
-            //ToDo
+            SceneManager.LoadScene(0);
         });
 
         retryButton.onClick.AddListener(() =>
@@ -46,21 +51,53 @@ public class GameOverUI : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        //Show player score
-        foreach(Transform child in scoreContainer)
+        //Setups for Game over
+        if (GameManager.Instance.IsGameModeSinglePlayer())
+        {
+            SinglePlayerGameOver();
+        }
+        else if (GameManager.Instance.IsGameModeMultiplyPlayer())
+        {
+            MultiplayerGameOver();
+        }
+    }
+
+    private void ResetGamerOverUI()
+    {
+
+    }
+
+    private void SinglePlayerGameOver()
+    {
+        //setup right UI
+        scoreContainer.gameObject.SetActive(false);
+        leaderBoard.gameObject.SetActive(true);
+
+        //int score = GameManager.Instance.GetPlayerScores()[];
+
+        //leaderBoard.GetComponent<LeaderBoard>().CreateLeaderBoardWithNewEntry(new LeaderBoardEntry {Score = score});
+    }
+
+    private void MultiplayerGameOver()
+    {
+        //set up right UI
+        scoreContainer.gameObject.SetActive(true);
+        leaderBoard.gameObject.SetActive(false);
+
+        //Empties any score results
+        foreach (Transform child in scoreContainer)
         {
             Destroy(child.gameObject);
         }
 
-        foreach(var kvp in GameManager.Instance.GetPlayerScores())
+        foreach (var kvp in GameManager.Instance.GetPlayerScores())
         {
             //Instantiate score text
             GameObject scoreText = Instantiate(scoreTextPrefab, scoreContainer);
-            
+
             //Change the text for the score text
             scoreText.GetComponent<TextMeshProUGUI>().text = "Score: " + kvp.Value.ToString();
         }
-
     }
 
     private void Hide()

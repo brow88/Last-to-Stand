@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public enum GameMode
     {
         SinglePlayer,
-        Multiplyer,
+        Multiplayer,
     }
     private GameMode gameMode;
 
@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
 
     public void NewGame(GameMode gameMode)
     {
-        //ToDo: eventally the game mode will affect the set up
+        //ToDo: eventually the game mode will affect the set up
         playersScores.Clear();
         GameObject[] players_GOs = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject player_GO in players_GOs)
@@ -125,6 +125,16 @@ public class GameManager : MonoBehaviour
     }
 
     #region Getter and setters
+
+    public bool IsGameModeSinglePlayer()
+    {
+        return gameMode == GameMode.SinglePlayer;
+    }
+
+    public bool IsGameModeMultiplyPlayer()
+    {
+        return gameMode == GameMode.Multiplayer;
+    }
 
     public bool IsTutorial()
     {

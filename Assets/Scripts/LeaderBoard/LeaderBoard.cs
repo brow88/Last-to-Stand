@@ -154,7 +154,10 @@ public class LeaderBoard : MonoBehaviour
         }
 
         //scroll to the new rect entry
-        ScrollToRowEntry(newEntryRank);
+        if (entryInserted)
+        {
+            ScrollToRowEntry(newEntryRank);
+        }
     }
 
     #endregion
