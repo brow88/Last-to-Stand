@@ -32,7 +32,9 @@ public class Player : MonoBehaviour
     public float speedIncreasePerDrink = 0.05f; // Speed increase per drink
     private bool isStopping = false;
     private float nextStopTime;
-
+    private bool isLeaningLeft;
+    private DateTime lastLeanCheck;
+    private float appliedLeaningForce =0f;
     #endregion
 
     #region QTE
@@ -81,6 +83,7 @@ public class Player : MonoBehaviour
         ScheduleNextStop();
         QteNumberOfTriesReset = QteNumberOfTries;
         GameManager.Instance.OnScoreChange += GameManager_OnScoreChange;
+        lastLeanCheck = DateTime.Now;
     }
 
     private void GameManager_OnScoreChange(object sender, EventArgs e)
@@ -190,20 +193,29 @@ public class Player : MonoBehaviour
     /// </summary>
     private void ApplySwayingPhysics()
     {
-        //applied force can never be larger than player force
-        float appliedFallingForce = Math.Min(baseFallingForce + (NumberOfDrinks * speedIncreasePerDrink),
-            playerLeaningInputMultipler);
-
+        if ((DateTime.Now - lastLeanCheck).TotalSeconds>=1f)
+        {
+            var swapDirection = Random.Range(0, 10) == 5;
+            if (swapDirection)
+                isLeaningLeft = !isLeaningLeft;
+            lastLeanCheck = DateTime.Now;
+            //applied force can never be larger than player force
+            var baseLineForce = Math.Min(baseFallingForce + (NumberOfDrinks * speedIncreasePerDrink), playerLeaningInputMultipler);
+            float appliedFallingForce = Random.Range(baseLineForce * 0.5f, baseLineForce * 1.5f);
+            appliedLeaningForce = appliedFallingForce;
+        }
+      
+       
         // Check which way you are leaning
-        if (leaning > 0)
+        if (!isLeaningLeft)
         {
             // Leaning right so you lean more right
-            leaning += appliedFallingForce * Time.deltaTime;
+            leaning += appliedLeaningForce * Time.deltaTime;
         }
         else
         {
             // Leaning left so lean more left
-            leaning -= appliedFallingForce * Time.deltaTime;
+            leaning -= appliedLeaningForce * Time.deltaTime;
         }
     }
 
