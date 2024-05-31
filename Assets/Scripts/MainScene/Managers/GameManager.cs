@@ -13,11 +13,6 @@ public class GameManager : MonoBehaviour
     [Tooltip("Timer count down before game starts")]
     public float startTimer = 3f;
 
-    public enum GameMode
-    {
-        SinglePlayer,
-        Multiplayer,
-    }
     private GameMode gameMode;
 
     public enum GameState
@@ -47,10 +42,10 @@ public class GameManager : MonoBehaviour
 
 
     //TODO: eventually this will be called by mainMenu
-    private void Start()
-    {
-        NewGame(GameMode.SinglePlayer);
-    }
+    //private void Start()
+    //{
+    //    NewGame(GameMode.SinglePlayer);
+    //}
 
 
     private void Update()
