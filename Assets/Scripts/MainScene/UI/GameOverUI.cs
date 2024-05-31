@@ -62,11 +62,6 @@ public class GameOverUI : MonoBehaviour
         }
     }
 
-    private void ResetGamerOverUI()
-    {
-
-    }
-
     private void SinglePlayerGameOver()
     {
         //setup right UI

@@ -7,6 +7,8 @@ using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
+    public bool isPlayerOne;
+
     [Header("UI")]
     [SerializeField] private PlayerBarUI playerBarUI;
     [SerializeField] private LeaningMeterUI leaningMeterUI;
@@ -88,8 +90,11 @@ public class Player : MonoBehaviour
 
     private void GameManager_OnScoreChange(object sender, EventArgs e)
     {
-        int score = GameManager.Instance.GetPlayerScores()[this];
-        playerBarUI.UpdateScoreDisplay(score);
+        if (isPlayerOne || GameManager.Instance.IsGameModeMultiplyPlayer())
+        {
+            int score = GameManager.Instance.GetPlayerScores()[this];
+            playerBarUI.UpdateScoreDisplay(score);
+        }
     }
 
 
@@ -150,31 +155,68 @@ public class Player : MonoBehaviour
         playerBarUI.ResetPlayerBarUI();
     }
 
+
+    //Used by player 2 if in one player mode
+    public void DeactivatePlayer()
+    {
+        playerBarUI.gameObject.SetActive(false);
+        leaningMeterUI.gameObject.SetActive(false);
+        quickTimeUI.gameObject.SetActive(false);
+        gameObject.SetActive(false);
+    }
+
+
     /// <summary>
     /// Handles player input for leaning.
     /// </summary>
     private void HandlePlayerInput()
     {
-        if (InputManager.Instance.LeanRightInput())
+        if (isPlayerOne)
         {
-            leaning += playerLeaningInputMultipler * Time.deltaTime;
+            //Player One inputs
+            if (InputManager.Instance.LeanRightPlayerOneInput())
+            {
+                leaning += playerLeaningInputMultipler * Time.deltaTime;
+            }
+
+            if (InputManager.Instance.LeanLeftPlayerOneInput())
+            {
+                leaning -= playerLeaningInputMultipler * Time.deltaTime;
+            }
+
+            if (InputManager.Instance.SpaceBarDown())
+            {
+                Drink();
+            }
+        }
+        else
+        {
+            //Player two inputs
+            if (InputManager.Instance.LeanRightPlayerTwoInput())
+            {
+                leaning += playerLeaningInputMultipler * Time.deltaTime;
+            }
+
+            if (InputManager.Instance.LeanLeftPlayerTwoInput())
+            {
+                leaning -= playerLeaningInputMultipler * Time.deltaTime;
+            }
+
+            if (InputManager.Instance.DrinkPlayerTwoInput())
+            {
+                Drink();
+            }
         }
 
-        if (InputManager.Instance.LeanLeftInput())
-        {
-            leaning -= playerLeaningInputMultipler * Time.deltaTime;
-        }
-
-        if (InputManager.Instance.SpaceBarDown())
-        {
-            Drink();
-        }
     }
 
     #region Balance / sway / Slap
 
     public void Slapped()
     {
+        //If slapped the -1 score
+        GameManager.Instance.UpdatePlayerScore(this, -1);
+
         var slapForce = Random.Range(0.25f,0.35f);
         var isLeft = Random.Range(0, 10) > 5;
         if (isLeft)
@@ -184,8 +226,7 @@ public class Player : MonoBehaviour
         else
         {
             leaning += (float)slapForce;
-        }
-     
+        }    
     }
 
     /// <summary>
@@ -312,7 +353,7 @@ public class Player : MonoBehaviour
         OnQTEUpdate?.Invoke(qteMarkerPosition);
 
         // Check for player input
-        if (InputManager.Instance.QuickTimeInput() && isQteAllowed)
+        if (InputManager.Instance.QuickTimePlayerOneInput() && isQteAllowed)
         {
             if (!isQteRecording)
             {

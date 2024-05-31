@@ -44,9 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 219e07a01f918e948bced7e376995879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerOne: 1
+  playerBarUI: {fileID: 0}
   leaningMeterUI: {fileID: 0}
   quickTimeUI: {fileID: 0}
   NumberOfDrinks: 0
+  DrunkLevel: 0
   playerLeaningInputMultipler: 0.5
   baseFallingForce: 0
   stopDuration: 0.5
@@ -60,6 +63,10 @@ MonoBehaviour:
   qteMinSpeed: 0.5
   qteMaxSpeed: 2
   qteHitWindow: 0.02
+  qteCloseHitWindow: 0.04
   QteCollectTimeInSec: 0.05
   QteCooldowTimeInSec: 0.2
   QteNumberOfTries: 3
+  QteFailedRaisesDrunkBy: 20
+  QteOkRaisesDrunkBy: 10
+  QteerfectRaisesDrunkBy: 0

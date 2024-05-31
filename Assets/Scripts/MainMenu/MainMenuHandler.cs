@@ -59,11 +59,8 @@ public class MainMenuHandler : MonoBehaviour
         optionsPanel.SetActive(true);
 
         //Main menu
-        singlePlayerButton.onClick.AddListener(()=>
-        {
-            Debug.Log("Start");
-            StartGame();
-        });
+        singlePlayerButton.onClick.AddListener(StartSinglePlayerMode);
+        multiplayerButton.onClick.AddListener(StartMultiPlayerMode);
         leaderBoardButton.onClick.AddListener(LeaderBoard);
         optionsButton.onClick.AddListener(Options);
         quitButton.onClick.AddListener(QuitGame);
@@ -76,9 +73,14 @@ public class MainMenuHandler : MonoBehaviour
     }
 
 
-    private void StartGame()
+    private void StartSinglePlayerMode()
     {
         SceneTransitionManager.Instance.LoadGameWithMode(GameMode.SinglePlayer);
+    }
+
+    private void StartMultiPlayerMode()
+    {
+        SceneTransitionManager.Instance.LoadGameWithMode(GameMode.Multiplayer);
     }
 
 

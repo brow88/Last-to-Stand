@@ -45,7 +45,7 @@ public class SlidingGlass : MonoBehaviour
             MoveGlass();
         }
 
-        if (InputManager.Instance.CatchGlassInput())
+        if (InputManager.Instance.CatchGlassPlayerOneInput())
         {
             TryCatchGlass();
         }

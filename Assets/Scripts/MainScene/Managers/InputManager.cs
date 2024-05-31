@@ -19,8 +19,9 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    #region Player One
 
-    public bool LeanLeftInput()
+    public bool LeanLeftPlayerOneInput()
     {
         if (Input.GetKey(KeyCode.A))
         {
@@ -30,7 +31,7 @@ public class InputManager : MonoBehaviour
     }
 
 
-    public bool LeanRightInput()
+    public bool LeanRightPlayerOneInput()
     {
         if (Input.GetKey(KeyCode.D))
         {
@@ -39,7 +40,7 @@ public class InputManager : MonoBehaviour
         return false;
     }
 
-    public bool QuickTimeInput()
+    public bool QuickTimePlayerOneInput()
     {
         if (Input.GetKey(KeyCode.S))
         {
@@ -48,7 +49,7 @@ public class InputManager : MonoBehaviour
         return false;
     }
 
-    public bool CatchGlassInput()
+    public bool CatchGlassPlayerOneInput()
     {
         if (Input.GetKey(KeyCode.E))
         {
@@ -67,4 +68,56 @@ public class InputManager : MonoBehaviour
         }
         return false;
     }
+
+    #endregion
+
+    #region Player Two
+
+    public bool LeanLeftPlayerTwoInput()
+    {
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    public bool LeanRightPlayerTwoInput()
+    {
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool QuickTimePlayerTwoInput()
+    {
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool CatchGlassPlayerTwoInput()
+    {
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool DrinkPlayerTwoInput()
+    {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    #endregion
 }

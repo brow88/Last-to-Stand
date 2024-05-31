@@ -42,10 +42,10 @@ public class GameManager : MonoBehaviour
     }
 
 
-    //TESTING CODE: TEST IN THE ENUM IS ALSO ONLY USED HERE
+    //TESTING CODE: TEST IN THE ENUM IS ALSO ONLY USED HERE.         THIS CODE NEEDS TO BE REMOVED TO ENABLE MULTIPLER
     private void Start()
     {
-        if(state == GameState.Test)
+        if (state == GameState.Test)
         {
             NewGame(GameMode.SinglePlayer);
         }
@@ -88,16 +88,33 @@ public class GameManager : MonoBehaviour
 
     public void NewGame(GameMode gameMode)
     {
-        //ToDo: eventually the game mode will affect the set up
+        this.gameMode = gameMode;
         playersScores.Clear();
+
         GameObject[] players_GOs = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject player_GO in players_GOs)
         {
             Player player = player_GO.GetComponent<Player>();
-            playersScores.Add(player, 0);
-            player.PlayerReset();
-        }
 
+            if (gameMode == GameMode.SinglePlayer)
+            {
+                if (player.isPlayerOne)
+                {
+                    playersScores.Add(player, 0);
+                    player.PlayerReset();
+                }
+                else
+                {
+                    //Deactivate Player 2 if in single play mode
+                    player.DeactivatePlayer();
+                }
+            }
+            if (gameMode == GameMode.Multiplayer)
+            {
+                playersScores.Add(player, 0);
+                player.PlayerReset();
+            }
+        }
         ChangeGameState(GameState.Tutorial);
     }
 
@@ -123,6 +140,11 @@ public class GameManager : MonoBehaviour
     {
         playersScores[player] += score;
         OnScoreChange?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void PlayerHasFallen(Player player)
+    {
+        ChangeGameState(GameState.GameOver);
     }
 
     #region Getter and setters
@@ -160,11 +182,6 @@ public class GameManager : MonoBehaviour
     public float GetStartTimer()
     {
         return startTimer;
-    }
-
-    public void PlayerHasFallen(Player player)
-    {
-        ChangeGameState(GameState.GameOver);
     }
 
     public Dictionary<Player, int> GetPlayerScores()
