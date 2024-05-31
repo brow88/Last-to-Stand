@@ -85,18 +85,22 @@ public class SoundManager : MonoBehaviour
             Debug.Log($"Could not locate sound: {noise.name}");
             return null;
         }
+
+        MusicSource.volume += noise.OverwriteVolumeOffset;
         return noise.clip;
     }
     private IEnumerator PlayMusicLoop()
     {
         while (true)
         {
+            var volumeBackup = MusicSource.volume;
             var clip = GetRandomOfType(currentType);
             if (clip != null)
             {
                 MusicSource.clip = clip;
                 MusicSource.Play();
                 yield return new WaitForSeconds(clip.length);
+                MusicSource.volume = volumeBackup;
             }
             else
             {
@@ -128,6 +132,7 @@ public struct Noise
     public string name;
     public SFXType type;
     public AudioClip clip;
+    public float OverwriteVolumeOffset;
 }
 
 public enum SFXType
