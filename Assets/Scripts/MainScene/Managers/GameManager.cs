@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get;  private set; }
 
     public event EventHandler OnGameStateChange;
+    public event EventHandler OnScoreChange;
 
     [Tooltip("Timer count down before game starts")]
     public float startTimer = 3f;
@@ -122,6 +123,7 @@ public class GameManager : MonoBehaviour
     public void UpdatePlayerScore(Player player, int score)
     {
         playersScores[player] += score;
+        OnScoreChange?.Invoke(this, EventArgs.Empty);
     }
 
     #region Getter and setters

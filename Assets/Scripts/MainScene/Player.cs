@@ -7,8 +7,10 @@ using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
-    [Header("UI")] [SerializeField] LeaningMeterUI leaningMeterUI;
-    [SerializeField] QuickTimeUI quickTimeUI;
+    [Header("UI")]
+    [SerializeField] private PlayerBarUI playerBarUI;
+    [SerializeField] private LeaningMeterUI leaningMeterUI;
+    [SerializeField] private QuickTimeUI quickTimeUI;
 
     public int NumberOfDrinks = 0;
     public int DrunkLevel = 0;
@@ -78,7 +80,15 @@ public class Player : MonoBehaviour
     {
         ScheduleNextStop();
         QteNumberOfTriesReset = QteNumberOfTries;
+        GameManager.Instance.OnScoreChange += GameManager_OnScoreChange;
     }
+
+    private void GameManager_OnScoreChange(object sender, EventArgs e)
+    {
+        int score = GameManager.Instance.GetPlayerScores()[this];
+        playerBarUI.UpdateScoreDisplay(score);
+    }
+
 
     private void Awake()
     {
@@ -134,6 +144,7 @@ public class Player : MonoBehaviour
         leaning = 0;
         playerStanding = true;
         leaningMeterUI.UpdateLeaningMeter(leaning);
+        playerBarUI.ResetPlayerBarUI();
     }
 
     /// <summary>
