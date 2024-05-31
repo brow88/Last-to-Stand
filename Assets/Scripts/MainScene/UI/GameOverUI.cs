@@ -22,7 +22,7 @@ public class GameOverUI : MonoBehaviour
     {
         mainMenuButton.onClick.AddListener(() =>
         {
-            SceneManager.LoadScene(0);
+            SceneTransitionManager.Instance.LoadMainMenu();
         });
 
         retryButton.onClick.AddListener(() =>

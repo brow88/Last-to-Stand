@@ -31,9 +31,9 @@ public class SceneTransitionManager : MonoBehaviour
     }
 
 
-    private void LoadGameWithMode(GameMode gameMode)
+    public void LoadGameWithMode(GameMode gameMode)
     {
-        LoadGameWithModeCouroutine(gameMode);
+        StartCoroutine(LoadGameWithModeCouroutine(gameMode));
     }
 
 

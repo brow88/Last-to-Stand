@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using UnityEngine.SceneManagement;
 
 public class MainMenuHandler : MonoBehaviour
 {
@@ -59,7 +58,11 @@ public class MainMenuHandler : MonoBehaviour
         optionsPanel.SetActive(true);
 
         //Main menu
-        startButton.onClick.AddListener(StartGame);
+        startButton.onClick.AddListener(()=>
+        {
+            Debug.Log("Start");
+            StartGame();
+        });
         leaderBoardButton.onClick.AddListener(LeaderBoard);
         optionsButton.onClick.AddListener(Options);
         quitButton.onClick.AddListener(QuitGame);
@@ -74,7 +77,7 @@ public class MainMenuHandler : MonoBehaviour
 
     private void StartGame()
     {
-        SceneManager.LoadScene(1);
+        SceneTransitionManager.Instance.LoadGameWithMode(GameMode.SinglePlayer);
     }
 
 
