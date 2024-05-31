@@ -13,7 +13,8 @@ public class MainMenuHandler : MonoBehaviour
     [SerializeField] private GameObject fadeOutPanel;
 
     [Header("Main Menu")]
-    [SerializeField] private Button startButton;
+    [SerializeField] private Button singlePlayerButton;
+    [SerializeField] private Button multiplayerButton;
     [SerializeField] private Button leaderBoardButton;
     [SerializeField] private Button optionsButton;
     [SerializeField] private Button quitButton;
@@ -58,7 +59,7 @@ public class MainMenuHandler : MonoBehaviour
         optionsPanel.SetActive(true);
 
         //Main menu
-        startButton.onClick.AddListener(()=>
+        singlePlayerButton.onClick.AddListener(()=>
         {
             Debug.Log("Start");
             StartGame();

@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     public enum GameState
     {
+        Test,
         Tutorial,
         StartTimer,
         Playing,
@@ -41,11 +42,14 @@ public class GameManager : MonoBehaviour
     }
 
 
-    //TODO: eventually this will be called by mainMenu
-    //private void Start()
-    //{
-    //    NewGame(GameMode.SinglePlayer);
-    //}
+    //TESTING CODE: TEST IN THE ENUM IS ALSO ONLY USED HERE
+    private void Start()
+    {
+        if(state == GameState.Test)
+        {
+            NewGame(GameMode.SinglePlayer);
+        }
+    }
 
 
     private void Update()
