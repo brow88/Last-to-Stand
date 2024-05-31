@@ -6,7 +6,7 @@ using UnityEngine;
 public class LeaderBoardInputRow : MonoBehaviour
 {
     private const int CHAR_LIMIT = 20;
-    private const string validCharacters = " 1234567890qwertyuiopasdfghjklzxcvbnm";
+    private const string validCharacters = " 1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
 
     [SerializeField] private TextMeshProUGUI rankTextMesh;
     [SerializeField] private TMP_InputField inputField;
