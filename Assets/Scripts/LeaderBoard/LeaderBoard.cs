@@ -52,7 +52,7 @@ public class LeaderBoard : MonoBehaviour
         for (int i = 0; i < entries.Length; i++)
         {
             string[] entryInfo = entries[i].Split(new char[] { '|' });
-            string entryName = entryInfo[0];
+            string entryName = System.Web.HttpUtility.UrlDecode(entryInfo[0]);
             int score = int.Parse(entryInfo[1]);
             leaderBoardEntryList.Add(new LeaderBoardEntry(entryName, score));
         }
