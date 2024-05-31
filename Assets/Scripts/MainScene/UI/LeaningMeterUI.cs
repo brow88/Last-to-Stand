@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class LeaningMeterUI : MonoBehaviour
 {
-    [SerializeField] private Image fillImage;
+    [SerializeField] private int maxRangeAngle;
+    [SerializeField] private GameObject arrow;
 
 
     /// <summary>
@@ -19,6 +20,7 @@ public class LeaningMeterUI : MonoBehaviour
             Debug.LogError("Leaning amount is " + leaningAmount + ". It should be between -1 and +1.");
         }
 
-        fillImage.fillAmount = (leaningAmount + 1f) / 2f;
+        float zRotation = -leaningAmount * maxRangeAngle;
+        arrow.transform.rotation = Quaternion.Euler(0, 0, zRotation);
     }
 }
