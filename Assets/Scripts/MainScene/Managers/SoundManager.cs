@@ -14,7 +14,7 @@ public class SoundManager : MonoBehaviour
     public AudioSource MusicSource;
     public SFXType currentType;
     private string menuSceneName = "MainMenu";
-    private string gameSceneName = "MainScene";
+    private string gameSceneName = "GameScene";
 
     private void Awake()
     {
