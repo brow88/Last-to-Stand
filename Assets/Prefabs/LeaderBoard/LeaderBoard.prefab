@@ -187,11 +187,11 @@ RectTransform:
   m_Father: {fileID: 8112345301823177906}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 594.154, y: -8}
-  m_SizeDelta: {x: 35.968, y: 800}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 54, y: 0}
+  m_SizeDelta: {x: 35.968018, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &4505247553442592711
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -273,7 +273,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 344910469456802713}
   m_HandleRect: {fileID: 5014572223051662044}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -430,10 +430,10 @@ RectTransform:
   m_Father: {fileID: 8112345301823177906}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 25, y: -8}
-  m_SizeDelta: {x: 1000, y: 800}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8899238164897142581
 MonoBehaviour:
@@ -571,4 +571,4 @@ MonoBehaviour:
   RowEntryPrefab: {fileID: 1101405300426951660, guid: ce3f1454b2d2db64babe98bce5a595f7, type: 3}
   InputRowPrefab: {fileID: 7786058391983558694, guid: cc4abfc05964a0f4c80ae1e350854390, type: 3}
   leaderBoardContainer: {fileID: 1146038574444193307}
-  scrollRect: {fileID: 0}
+  scrollRect: {fileID: 8899238164897142581}

@@ -183,10 +183,17 @@ public class LeaderBoard : MonoBehaviour
         }
         else
         {
+            if (totalEntries == 1)
+            {
+                //do not need to scroll to entry if first entry i.e 1
+                return;
+            }
+
             Canvas.ForceUpdateCanvases();
 
             //If row is valid scroll to it
             float targetNormalizedPosition = 1f - (rowEntry / (totalEntries));
+
             scrollRect.verticalNormalizedPosition = targetNormalizedPosition;
         }
     }

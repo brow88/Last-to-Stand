@@ -73,9 +73,13 @@ public class GameOverUI : MonoBehaviour
         scoreContainer.gameObject.SetActive(false);
         leaderBoard.gameObject.SetActive(true);
 
-        //int score = GameManager.Instance.GetPlayerScores()[];
+        int score = 0;
+        foreach (var kvp in GameManager.Instance.GetPlayerScores())
+        {
+            score = kvp.Value;
+        }
 
-        //leaderBoard.GetComponent<LeaderBoard>().CreateLeaderBoardWithNewEntry(new LeaderBoardEntry {Score = score});
+        leaderBoard.GetComponent<LeaderBoard>().CreateLeaderBoardWithNewEntry(new LeaderBoardEntry {Score = score});
     }
 
     private void MultiplayerGameOver()
