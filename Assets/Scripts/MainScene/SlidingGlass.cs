@@ -113,7 +113,7 @@ public class SlidingGlass : MonoBehaviour
             Debug.Log("Glass Caught! -> give it to the player 2");
         }
         
-        Player.GotDrink();
+        Player.GetDrink();
         Destroy(gameObject);
     }
 

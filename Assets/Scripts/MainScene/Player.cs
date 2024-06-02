@@ -8,6 +8,8 @@ using Random = UnityEngine.Random;
 public class Player : MonoBehaviour
 {
     public bool IsPlayerOne;
+    [SerializeField] private GameObject characterArt;
+    private Animator animator;
 
     [Header("UI")]
     [SerializeField] private PlayerBarUI playerBarUI;
@@ -83,26 +85,10 @@ public class Player : MonoBehaviour
     #endregion
 
 
-    private void Start()
-    {
-        ScheduleNextStop();
-        QteNumberOfTriesReset = QteNumberOfTries;
-        GameManager.Instance.OnScoreChange += GameManager_OnScoreChange;
-        lastLeanCheck = DateTime.Now;
-    }
-
-    private void GameManager_OnScoreChange(object sender, EventArgs e)
-    {
-        if (IsPlayerOne || GameManager.Instance.IsGameModeMultiplyPlayer())
-        {
-            int score = GameManager.Instance.GetPlayerScores()[this];
-            playerBarUI.UpdateScoreDisplay(score);
-        }
-    }
-
-
     private void Awake()
     {
+        animator = characterArt.GetComponent<Animator>();
+
         if (quickTimeUI != null)
         {
             OnQTEUpdate += quickTimeUI.UpdateQTE;
@@ -110,13 +96,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+
+    private void Start()
     {
-        if (quickTimeUI != null)
-        {
-            OnQTEUpdate -= quickTimeUI.UpdateQTE;
-            OnQTargetUpdate -= quickTimeUI.SetQTargetPosition;
-        }
+        ScheduleNextStop();
+        QteNumberOfTriesReset = QteNumberOfTries;
+        GameManager.Instance.OnScoreChange += GameManager_OnScoreChange;
+        lastLeanCheck = DateTime.Now;
     }
 
     private void Update()
@@ -155,6 +141,24 @@ public class Player : MonoBehaviour
                 }
                 
             }
+        }
+    }
+
+    private void GameManager_OnScoreChange(object sender, EventArgs e)
+    {
+        if (IsPlayerOne || GameManager.Instance.IsGameModeMultiplyPlayer())
+        {
+            int score = GameManager.Instance.GetPlayerScores()[this];
+            playerBarUI.UpdateScoreDisplay(score);      
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (quickTimeUI != null)
+        {
+            OnQTEUpdate -= quickTimeUI.UpdateQTE;
+            OnQTargetUpdate -= quickTimeUI.SetQTargetPosition;
         }
     }
 
@@ -199,7 +203,7 @@ public class Player : MonoBehaviour
 
             if (InputManager.Instance.SpaceBarDown())
             {
-                Drink();
+                StartCoroutine(Drink());
             }
         }
         else
@@ -217,7 +221,7 @@ public class Player : MonoBehaviour
 
             if (InputManager.Instance.DrinkPlayerTwoInput())
             {
-                Drink();
+                StartCoroutine(Drink());
             }
         }
 
@@ -315,9 +319,10 @@ public class Player : MonoBehaviour
 
     #region Drinking
 
-    public void GotDrink()
+    public void GetDrink()
     {
         hasDrink = true;
+        animator.SetLayerWeight(3, 1);
     }
 
     public bool HasDrink 
@@ -328,13 +333,19 @@ public class Player : MonoBehaviour
         } 
     }
 
-    public void Drink()
+    public IEnumerator Drink()
     {
         if (!hasDrink) //todo maybe VO line "How am I suppose to drink without a drink"?
-            return;
-        hasDrink = false;
-        NumberOfDrinks++;
+            yield break;
 
+        //Animation
+        animator.SetTrigger("Drink");
+
+        //release glass back onto table.
+        yield return new WaitForSeconds(1.5f);
+        animator.SetLayerWeight(3, 0);
+
+        NumberOfDrinks++;
         ChangedDrunkLevel(1);
 
         GameManager.Instance.UpdatePlayerScore(this, 5); //ToDo: score vary according to type of drink?!?
@@ -344,6 +355,8 @@ public class Player : MonoBehaviour
             quickTimeUI.gameObject.SetActive(true);
             StartQTE();
         }
+
+        hasDrink = false;
     }
 
     public void ChangedDrunkLevel(int amount)

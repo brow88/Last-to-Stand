@@ -3630,6 +3630,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1707928021}
     - target: {fileID: 6085307958246842779, guid: 29987d13c33cca549a34552acb299ba2, type: 3}
+      propertyPath: characterArt
+      value: 
+      objectReference: {fileID: 562135025}
+    - target: {fileID: 6085307958246842779, guid: 29987d13c33cca549a34552acb299ba2, type: 3}
       propertyPath: leaningMeterUI
       value: 
       objectReference: {fileID: 629923427}
@@ -6911,6 +6915,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 650140944477766460, guid: a61b928adbb3e2c42982a1021f175101, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 43.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 650140944477766460, guid: a61b928adbb3e2c42982a1021f175101, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 174
+      objectReference: {fileID: 0}
     - target: {fileID: 2142108600778854052, guid: a61b928adbb3e2c42982a1021f175101, type: 3}
       propertyPath: m_LocalPosition.x
       value: 395.4
@@ -7490,6 +7502,10 @@ PrefabInstance:
       propertyPath: quickTimeUI
       value: 
       objectReference: {fileID: 616903425}
+    - target: {fileID: 6085307958246842779, guid: 29987d13c33cca549a34552acb299ba2, type: 3}
+      propertyPath: characterArt
+      value: 
+      objectReference: {fileID: 972711575}
     - target: {fileID: 6085307958246842779, guid: 29987d13c33cca549a34552acb299ba2, type: 3}
       propertyPath: leaningMeterUI
       value: 
