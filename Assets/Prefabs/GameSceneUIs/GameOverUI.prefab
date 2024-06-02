@@ -974,6 +974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb53ca8091c554c4390d5b06ff6bb349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverReasonTextMesh: {fileID: 470809584870320740}
   leaderBoard: {fileID: 2304561326619692268}
   scoreContainer: {fileID: 4945554126910565937}
   scoreTextPrefab: {fileID: 3140665463724377396, guid: c2238fdda155145459d80cb56903d125, type: 3}

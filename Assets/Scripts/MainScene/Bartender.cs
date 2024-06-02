@@ -20,7 +20,8 @@ public class Bartender : MonoBehaviour
     private Player lastPlayerServed;
 
     private List<Player> players;
-   private void Awake()
+
+    private void Awake()
     {
         if (Instance == null)
         {

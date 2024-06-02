@@ -146,30 +146,37 @@ public class GameManager : MonoBehaviour
         // Alters multi-player score due to loss
         if (gameMode == GameMode.Multiplayer)
         {
-            bool isPlayerOne = false;
+            List<Player> playersToModify = new List<Player>();
 
             switch (loseCondition)
             {
                 case LoseCondition.Player1FellOver:
-                    isPlayerOne = true;
-                    break;
                 case LoseCondition.Player1PassedOut:
-                    isPlayerOne = true;
+                    foreach (var kvp in playersScores)
+                    {
+                        if (kvp.Key.IsPlayerOne)
+                        {
+                            playersToModify.Add(kvp.Key);
+                        }
+                    }
                     break;
                 case LoseCondition.Player2FellOver:
-                    isPlayerOne = false;
-                    break;
                 case LoseCondition.Player2PassedOut:
-                    isPlayerOne = false;
+                    foreach (var kvp in playersScores)
+                    {
+                        if (!kvp.Key.IsPlayerOne)
+                        {
+                            playersToModify.Add(kvp.Key);
+                        }
+                    }
                     break;
+
             }
 
-            foreach (var kvp in playersScores)
+            // Modify the scores outside of the enumeration
+            foreach (var player in playersToModify)
             {
-                if (kvp.Key.IsPlayerOne == isPlayerOne)
-                {
-                    playersScores[kvp.Key] -= 20;
-                }
+                playersScores[player] -= 20;
             }
         }
 
