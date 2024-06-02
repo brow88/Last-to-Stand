@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Bartender : MonoBehaviour
 {
@@ -16,7 +18,9 @@ public class Bartender : MonoBehaviour
 
     [SerializeField] private float startMinGlassSpeed = 60f;
     [SerializeField] private float startMaxGlassSpeed = 90f;
-    [SerializeField] private Player Player1;
+    private Player lastPlayerServed;
+
+    private List<Player> players;
    private void Awake()
     {
         if (Instance == null)
@@ -41,10 +45,26 @@ public class Bartender : MonoBehaviour
 
     public void CheckIfDrinkShouldBeServed()
     {
+        players ??= GameManager.Instance.GetPlayers;
         //randomly serve a new glass every X Seconds
         if (Time.time >= nextDrinkServingTime)
         {
-            ServeDrink(Player1);
+            if (lastPlayerServed == null)
+            {
+                lastPlayerServed = players.First();
+            }
+
+            if (players.Count>1)
+            {
+                var serveToPlayer = players.FirstOrDefault(o=>o != lastPlayerServed);
+                ServeDrink(serveToPlayer);
+                lastPlayerServed = serveToPlayer;
+            }
+            else
+            {
+                ServeDrink(lastPlayerServed);
+            }
+           
             ScheduleNextDrink();
         }
     }

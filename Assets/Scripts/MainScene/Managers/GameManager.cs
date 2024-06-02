@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -148,6 +149,8 @@ public class GameManager : MonoBehaviour
     }
 
     #region Getter and setters
+
+    public List<Player> GetPlayers => playersScores.Keys.ToList();
 
     public bool IsGameModeSinglePlayer()
     {
