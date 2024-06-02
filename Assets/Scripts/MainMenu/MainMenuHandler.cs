@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEditor;
 
 public class MainMenuHandler : MonoBehaviour
 {
@@ -30,6 +31,9 @@ public class MainMenuHandler : MonoBehaviour
     [SerializeField] private float fadeOutDuration = 1;
     [SerializeField] private float fadeOutImgAlpha = 100f;
 
+    [Header("Mouse Cursor")]
+    [SerializeField] private Texture2D cursorTexture;
+
 
 
     private void Awake()
@@ -40,6 +44,8 @@ public class MainMenuHandler : MonoBehaviour
 
     private void Start()
     {
+        SetMouseCursor();
+
         ButtonsListeners();
 
         StartingGamePanelsSetup();
@@ -47,6 +53,11 @@ public class MainMenuHandler : MonoBehaviour
         StartCoroutine(FadeInOut());
         
         Time.timeScale = 1f; // in case we want to add pause menu in game and need to set timeScale to 0
+    }
+
+    private void SetMouseCursor()
+    {
+        Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
     }
 
     #region Buttons
