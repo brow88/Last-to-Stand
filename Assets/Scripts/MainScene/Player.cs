@@ -120,7 +120,7 @@ public class Player : MonoBehaviour
             leaning = Mathf.Clamp(leaning, -1f, 1f);
 
             leaningMeterUI.UpdateLeaningMeter(leaning);
-
+            
             CheckIfPlayerHasFallen();
             CheckForStop();
 
@@ -142,6 +142,11 @@ public class Player : MonoBehaviour
                 
             }
         }
+    }
+
+    private void FixedUpdate()
+    {
+        SwayAnimationWeights();
     }
 
     private void GameManager_OnScoreChange(object sender, EventArgs e)
@@ -277,6 +282,28 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void SwayAnimationWeights()
+    {
+        // Check which way you are leaning
+        if (leaning == 0)
+        {
+            animator.SetLayerWeight(1, 0);
+            animator.SetLayerWeight(2, 0);
+        }
+        else if (leaning > 0)
+        {
+            // Leaning right so you lean more right in animation
+            animator.SetLayerWeight(1, 0);  //left to 0
+            animator.SetLayerWeight(2, leaning);   //right to leaning amount
+        }
+        else
+        {
+            // Leaning left so lean more left in animation
+            animator.SetLayerWeight(1, -leaning);  //left by leaning amount (should be +ve so reverse sign)
+            animator.SetLayerWeight(2, 0);   //right to leaning amount
+        }
+    }
+
     private void CheckIfPlayerHasFallen()
     {
         if (leaning >= 0.98f || leaning <= -0.98f)
@@ -341,7 +368,7 @@ public class Player : MonoBehaviour
         //Animation
         animator.SetTrigger("Drink");
 
-        //release glass back onto table.
+        //release glass back onto table after animation.
         yield return new WaitForSeconds(1.5f);
         animator.SetLayerWeight(3, 0);
 
