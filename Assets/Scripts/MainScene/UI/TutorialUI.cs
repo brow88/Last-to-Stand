@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class TutorialUI : MonoBehaviour
 {
+    [SerializeField] private GameObject OnePlayerControls;
+    [SerializeField] private GameObject TwoPlayerControls;
+
     private void Start()
     {
         GameManager.Instance.OnGameStateChange += GameManager_OnGameStateChange;
@@ -13,7 +16,15 @@ public class TutorialUI : MonoBehaviour
     {
         if (GameManager.Instance.IsTutorial())
         {
-            Show();
+
+            if (GameManager.Instance.IsGameModeSinglePlayer())
+            {
+                Show(GameMode.SinglePlayer);
+            }
+            else
+            {
+                Show(GameMode.Multiplayer);
+            }
         }
         else
         {
@@ -21,9 +32,21 @@ public class TutorialUI : MonoBehaviour
         }
     }
 
-    private void Show()
+    private void Show(GameMode gameMode)
     {
         gameObject.SetActive(true);
+
+        switch (gameMode)
+        {
+            case GameMode.SinglePlayer:
+                OnePlayerControls.SetActive(true);
+                TwoPlayerControls.SetActive(false);
+                break;
+            case GameMode.Multiplayer:
+                OnePlayerControls.SetActive(false);
+                TwoPlayerControls.SetActive(true);
+                break;
+        }
     }
 
     private void Hide()
