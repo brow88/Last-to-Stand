@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3742184695911552540}
-  - component: {fileID: 6704223214749744262}
   - component: {fileID: 1717787715554066053}
   m_Layer: 5
   m_Name: QuickTImeUI
@@ -42,20 +41,6 @@ RectTransform:
   m_AnchoredPosition: {x: -475, y: -49.31}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6704223214749744262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1884101888397008548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ac4c3d58df3e5943816c9080c9173bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxRangeAngle: 0
-  arrow: {fileID: 0}
 --- !u!114 &1717787715554066053
 MonoBehaviour:
   m_ObjectHideFlags: 0
