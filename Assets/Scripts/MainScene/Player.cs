@@ -302,6 +302,14 @@ public class Player : MonoBehaviour
         hasDrink = true;
     }
 
+    public bool HasDrink 
+    { 
+        get 
+        {   
+            return hasDrink; 
+        } 
+    }
+
     public void Drink()
     {
         if (!hasDrink) //todo maybe VO line "How am I suppose to drink without a drink"?

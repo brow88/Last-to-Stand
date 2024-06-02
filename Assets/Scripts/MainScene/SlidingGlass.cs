@@ -69,18 +69,27 @@ public class SlidingGlass : MonoBehaviour
 
     private void TryCatchGlass()
     {
-        // Check if the glass is at the catch position
-        var distanceToCatch = Vector3.Distance(transform.position, CatchPosition.position);
-        if (distanceToCatch < CatchRadius) 
+        //check if player is already holding a drink. Limits player to holding one drink     
+        if (!Player.HasDrink)
         {
-            isCaught = true;
-            isMoving = false;
-            OnGlassCaught();
+            // Check if the glass is at the catch position
+            var distanceToCatch = Vector3.Distance(transform.position, CatchPosition.position);
+            if (distanceToCatch < CatchRadius) 
+            {
+                isCaught = true;
+                isMoving = false;
+                OnGlassCaught();
+            }
+            else
+            {
+                Debug.Log($"Glass too far away to be caught! -> distance: {distanceToCatch}");
+            }
         }
         else
         {
-            Debug.Log($"Glass too far away to be caught! -> distance: {distanceToCatch}");
+            Debug.Log("Player is already holding a drink and cannot catch");
         }
+
     }
 
     private void OnGlassCaught()
