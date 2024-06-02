@@ -12,6 +12,26 @@ PrefabInstance:
       propertyPath: m_FillAmount
       value: 0.376
       objectReference: {fileID: 0}
+    - target: {fileID: 1557893816617290889, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 9.213
+      objectReference: {fileID: 0}
+    - target: {fileID: 1557893816617290889, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 6.142
+      objectReference: {fileID: 0}
+    - target: {fileID: 1557893816617290889, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.51190186
+      objectReference: {fileID: 0}
+    - target: {fileID: 1557893816617290889, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.51179504
+      objectReference: {fileID: 0}
+    - target: {fileID: 4321562297506278317, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5bac605bb377ed24bbf3cb8884bc9658, type: 3}
     - target: {fileID: 5131586938345087479, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
       propertyPath: m_Pivot.x
       value: 0
