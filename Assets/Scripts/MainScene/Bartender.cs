@@ -13,7 +13,8 @@ public class Bartender : MonoBehaviour
     private float nextDrinkServingTime;
     [SerializeField] private GameObject glass;
 
-    
+    [SerializeField] private Animator animator;
+    private bool busy;    //checks if an action is already being done: serve drink, slap
 
     [SerializeField] private float startMinGlassSpeed = 60f;
     [SerializeField] private float startMaxGlassSpeed = 90f;
@@ -45,6 +46,11 @@ public class Bartender : MonoBehaviour
 
     public void CheckIfDrinkShouldBeServed()
     {
+        if (busy)
+        {
+            return;
+        }
+
         players ??= GameManager.Instance.GetPlayers;
         //randomly serve a new glass every X Seconds
         if (Time.time >= nextDrinkServingTime)
@@ -57,22 +63,43 @@ public class Bartender : MonoBehaviour
             if (players.Count>1)
             {
                 var serveToPlayer = players.FirstOrDefault(o=>o != lastPlayerServed);
-                ServeDrink(serveToPlayer);
+                StartCoroutine(ServeDrink(serveToPlayer));
                 lastPlayerServed = serveToPlayer;
             }
             else
             {
-                ServeDrink(lastPlayerServed);
+                StartCoroutine(ServeDrink(lastPlayerServed));
             }
            
             ScheduleNextDrink();
         }
     }
 
-    public void ServeDrink(Player player)
+    public IEnumerator ServeDrink(Player player)
     {
-        Debug.Log(" Bartender is serving Drink");
+        while (busy)
+        {
+            yield return null;
+        }
 
+        Debug.Log(" Bartender is serving Drink");
+        busy = true;
+
+        //Pour drink and set which way to slide the drink for the animator
+        animator.SetTrigger("PourDrink");     
+        if (player.IsPlayerOne)
+        {
+            //Slide left
+            animator.SetBool("SlideL", true);
+        }
+        else
+        {
+            //Slide right
+            animator.SetBool("SlideL", false);
+        }       
+        yield return new WaitForSeconds(3f);    //poor drink 2.5 second + hand push 
+
+        //Send the whiskey
         GlassManager glassManager = GlassManager.Instance;
         Transform startPosition;
         Transform endPosition;
@@ -99,6 +126,11 @@ public class Bartender : MonoBehaviour
         glassProperties.Player = player;
         glassProperties.Speed = UnityEngine.Random.Range(startMinGlassSpeed, startMaxGlassSpeed);
         glassProperties.SetReady();
+
+
+        //Wait for hands to move back
+        yield return new WaitForSeconds(1f);      //pass drink is 1.5 seconds but the hands moving back is about 
+        busy = false;
     }
 
     private void ScheduleNextDrink()
@@ -116,13 +148,38 @@ public class Bartender : MonoBehaviour
     public void NotifyThatPlayerDroppedGlass(Player player)
     {
         Debug.Log("Bartender is angry!");
-        StartCoroutine(WalkOverAndSlap(3f,player));
+        StartCoroutine(WalkOverAndSlap(player));
     }
 
-    private IEnumerator WalkOverAndSlap(float delay, Player player)
+    private IEnumerator WalkOverAndSlap(Player player)
     {
-        yield return new WaitForSeconds(delay);
+        while (busy)
+        {
+            yield return null;
+        }
+
+        busy = true;
+
+        //slap animation
+        if (player.IsPlayerOne)
+        {
+            animator.SetTrigger("SlapL");
+        }
+        else
+        {
+            animator.SetTrigger("SlapR");
+        }
+
+        //walk to play and raise hand for slap
+        yield return new WaitForSeconds(2.2f);
+
+        //Slap
         gameObject.PlaySound(SoundManager.Instance.FindClip("Slap"), 1f);
         player.Slapped();
+
+        //walk back
+        yield return new WaitForSeconds(1.8f);
+        
+        busy = false;
     }
 }

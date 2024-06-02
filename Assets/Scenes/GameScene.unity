@@ -7116,7 +7116,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2142108600778854052, guid: a61b928adbb3e2c42982a1021f175101, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 395.4
+      value: 338.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 2142108600778854052, guid: a61b928adbb3e2c42982a1021f175101, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 148.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480173596557949058, guid: a61b928adbb3e2c42982a1021f175101, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 338.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480173596557949058, guid: a61b928adbb3e2c42982a1021f175101, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 148.2
       objectReference: {fileID: 0}
     - target: {fileID: 4678626869212835816, guid: a61b928adbb3e2c42982a1021f175101, type: 3}
       propertyPath: m_RootOrder
@@ -7187,6 +7199,10 @@ PrefabInstance:
       propertyPath: Player1
       value: 
       objectReference: {fileID: 692782847}
+    - target: {fileID: 6348284445373472709, guid: 25cd65bf23ba43243bf33eea38da841a, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1175334927}
     - target: {fileID: 6348284445373472709, guid: 25cd65bf23ba43243bf33eea38da841a, type: 3}
       propertyPath: startMaxGlassSpeed
       value: 90
