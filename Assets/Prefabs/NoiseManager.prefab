@@ -48,7 +48,7 @@ MonoBehaviour:
   Noises:
   - name: Slap
     type: 2
-    clip: {fileID: 8300000, guid: 5f90a03b87847e34484ea6ca24cb2568, type: 3}
+    clip: {fileID: 8300000, guid: 356c12abda45915428be1d10ad7eda26, type: 3}
     OverwriteVolumeOffset: 0
   - name: MainMenu
     type: 0
@@ -60,15 +60,15 @@ MonoBehaviour:
     OverwriteVolumeOffset: 0
   - name: GlassSlide
     type: 2
-    clip: {fileID: 8300000, guid: d8ffda0da11f7ff4b9704bcf65c52aa3, type: 3}
+    clip: {fileID: 8300000, guid: 3dd07f8cba56d1e418d85c482e3e6a22, type: 3}
     OverwriteVolumeOffset: 0
   - name: FrankGameMusic
     type: 1
-    clip: {fileID: 8300000, guid: 6bfe8c6d88b685649a5bfba51efe91ab, type: 3}
+    clip: {fileID: 8300000, guid: d4090c115f255b64fac221473bb8a64f, type: 3}
     OverwriteVolumeOffset: -0.4
   - name: GlassBreak
     type: 2
-    clip: {fileID: 8300000, guid: 60794d0030724254896e681b4e857552, type: 3}
+    clip: {fileID: 8300000, guid: 17e75c554d58d5047b7c834bf49f50cb, type: 3}
     OverwriteVolumeOffset: 0
   MusicSource: {fileID: 0}
   currentType: 0
