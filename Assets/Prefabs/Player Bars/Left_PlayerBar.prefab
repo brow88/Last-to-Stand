@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 326333919566998099, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.376
+      objectReference: {fileID: 0}
     - target: {fileID: 5131586938345087479, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -18,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5131586938345087479, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5131586938345087479, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
       propertyPath: m_AnchorMax.x
@@ -94,7 +98,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7079857774298699744, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
       propertyPath: m_Name
-      value: Base_PlayerBar
+      value: Left_PlayerBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 8975775655309368799, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
+      propertyPath: m_text
+      value: 'Score: 100'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

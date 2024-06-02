@@ -140,6 +140,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Right_PlayerBar
       objectReference: {fileID: 0}
+    - target: {fileID: 7106412288430729735, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7106412288430729735, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7106412288430729735, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -675
+      objectReference: {fileID: 0}
+    - target: {fileID: 7106412288430729735, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
     - target: {fileID: 7406039542965418878, guid: 11933cc8c998f5148b75863b8d48d369, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0
