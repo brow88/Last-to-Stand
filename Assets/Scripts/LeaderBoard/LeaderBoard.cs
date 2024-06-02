@@ -1,6 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Dan.Main;
+using Dan.Models;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -27,18 +31,52 @@ public class LeaderBoard : MonoBehaviour
 
     IEnumerator UploadNewScore(string name, int score)
     {
-        UnityWebRequest www = UnityWebRequest.Get(WEB_URL + PRIVATE_CODE + "/add/" + UnityWebRequest.EscapeURL(name) + "/" + score);
-        yield return www.SendWebRequest();
+        Leaderboards.LastToStand.UploadNewEntry(name,score);
+        yield return null;
+        //UnityWebRequest www = UnityWebRequest.Get(WEB_URL + PRIVATE_CODE + "/add/" + UnityWebRequest.EscapeURL(name) + "/" + score);
+        //yield return www.SendWebRequest();
     }
 
 
     IEnumerator DownloadLeaderBoard()
     {
-        UnityWebRequest www = UnityWebRequest.Get(WEB_URL + PUBLIC_CODE + "/pipe");
-        yield return www.SendWebRequest();
+        leaderBoardEntryList = new List<LeaderBoardEntry>();
+        Leaderboards.LastToStand.GetEntries(ProcessRawDownload);
+        
+        yield return null;
 
-        string rawDownload = www.downloadHandler.text;
-        ProcessRawDownload(rawDownload);
+       //UnityWebRequest www = UnityWebRequest.Get(WEB_URL + PUBLIC_CODE + "/pipe");
+       // yield return www.SendWebRequest();
+
+       // string rawDownload = www.downloadHandler.text;
+       // ProcessRawDownload(rawDownload);
+    }
+
+    private void ProcessRawDownload(Dan.Models.Entry[] entries)
+    {
+        leaderBoardEntryList = new List<LeaderBoardEntry>();
+        entries = entries.ToList().OrderByDescending(o=>o.Rank).ToArray();
+        foreach (var entry in entries)
+        {
+            string entryName = System.Web.HttpUtility.UrlDecode(entry.Username);
+            int score =entry.Score;
+            leaderBoardEntryList.Add(new LeaderBoardEntry(entryName, score));
+        };
+
+        //First empty the leader board
+        foreach (Transform child in leaderBoardContainer.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        //Create new leader board
+        int rankCount = 1;
+        foreach (LeaderBoardEntry entry in leaderBoardEntryList)
+        {
+            LeaderBoardRowEntry row = Instantiate(RowEntryPrefab, leaderBoardContainer).GetComponent<LeaderBoardRowEntry>();
+            row.Init(rankCount, entry);
+            rankCount++;
+        }
     }
 
 

@@ -13,7 +13,7 @@ public class LeaderBoardRowEntry : MonoBehaviour
     public void Init(int rank, LeaderBoardEntry rowEntryData)
     {
         rankTextMesh.text = rank.ToString();
-        playerNameTextMesh.text = rowEntryData.PlayerName;
+        playerNameTextMesh.text = rowEntryData.PlayerName??string.Empty;
         scoreTextMesh.text = rowEntryData.Score.ToString();
     }
     
