@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
     [SerializeField] private QuickTimeUI quickTimeUI;
 
     public int NumberOfDrinks = 0;
+    /// <summary>
+    /// How drunk is the player from 0-100
+    /// </summary>
     public int DrunkLevel = 0;
 
     #region Leaning / Balancing
