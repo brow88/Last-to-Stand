@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using Unity.VisualScripting;
-using UnityEditor;
 
 public class MainMenuHandler : MonoBehaviour
 {
@@ -12,6 +10,7 @@ public class MainMenuHandler : MonoBehaviour
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject leaderBoardPanel;
     [SerializeField] private GameObject optionsPanel;
+    [SerializeField] private GameObject creditPanel;
     [SerializeField] private GameObject fadeOutPanel;
 
     [Header("Main Menu")]
@@ -19,6 +18,7 @@ public class MainMenuHandler : MonoBehaviour
     [SerializeField] private Button multiplayerButton;
     [SerializeField] private Button leaderBoardButton;
     [SerializeField] private Button optionsButton;
+    [SerializeField] private Button creditButton;
     [SerializeField] private Button quitButton;
 
     [Header("Leader Board")]
@@ -26,6 +26,9 @@ public class MainMenuHandler : MonoBehaviour
 
     [Header("Options")]
     [SerializeField] private Button optionsReturnButton;
+
+    [Header("Credits")]
+    [SerializeField] private Button creditsReturnButton;
 
     [Header("Fade Out")]
     private Image fadeOutImage;
@@ -49,7 +52,7 @@ public class MainMenuHandler : MonoBehaviour
 
         ButtonsListeners();
 
-        StartingGamePanelsSetup();
+        MainMenu();
 
         StartCoroutine(FadeInOut());
         
@@ -75,12 +78,14 @@ public class MainMenuHandler : MonoBehaviour
         mainMenuPanel.SetActive(true);
         leaderBoardPanel.SetActive(true);
         optionsPanel.SetActive(true);
+        creditPanel.SetActive(true);
 
         //Main menu
         singlePlayerButton.onClick.AddListener(StartSinglePlayerMode);
         multiplayerButton.onClick.AddListener(StartMultiPlayerMode);
         leaderBoardButton.onClick.AddListener(LeaderBoard);
         optionsButton.onClick.AddListener(Options);
+        creditButton.onClick.AddListener(Credits);
         quitButton.onClick.AddListener(QuitGame);
 
         //Leader board
@@ -88,6 +93,9 @@ public class MainMenuHandler : MonoBehaviour
 
         //Options
         optionsReturnButton.onClick.AddListener(MainMenu);
+
+        //credits
+        creditsReturnButton.onClick.AddListener(MainMenu);
     }
 
 
@@ -107,6 +115,7 @@ public class MainMenuHandler : MonoBehaviour
         mainMenuPanel.SetActive(true);
         leaderBoardPanel.SetActive(false);
         optionsPanel.SetActive(false);
+        creditPanel.SetActive(false);
     }
 
 
@@ -115,6 +124,7 @@ public class MainMenuHandler : MonoBehaviour
         mainMenuPanel.SetActive(false);
         leaderBoardPanel.SetActive(true);
         optionsPanel.SetActive(false);
+        creditPanel.SetActive(false);
 
         leaderBoardPanel.GetComponent<LeaderBoard>().CreateLeaderBoard();
     }
@@ -125,6 +135,16 @@ public class MainMenuHandler : MonoBehaviour
         mainMenuPanel.SetActive(false);
         leaderBoardPanel.SetActive(false);
         optionsPanel.SetActive(true);
+        creditPanel.SetActive(false);
+    }
+
+
+    private void Credits()
+    {
+        mainMenuPanel.SetActive(false);
+        leaderBoardPanel.SetActive(false);
+        optionsPanel.SetActive(false);
+        creditPanel.SetActive(true);
     }
 
 
@@ -135,15 +155,6 @@ public class MainMenuHandler : MonoBehaviour
     }
 
     #endregion
-
-
-    private void StartingGamePanelsSetup()
-    {
-        mainMenuPanel.SetActive(true);
-        leaderBoardPanel.SetActive(false);
-        optionsPanel.SetActive(false);
-        fadeOutPanel.SetActive(true);
-    }
 
 
     private IEnumerator FadeInOut()
