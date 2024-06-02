@@ -3,17 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Dan.Main;
-using Dan.Models;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class LeaderBoard : MonoBehaviour
 {
-    private const string PRIVATE_CODE = "I_vqDlVLkkmUEJrU0S2FCwG8uMiTRWjUGboCJLeXWMPQ";
-    private const string PUBLIC_CODE = "6655214f8f40bb12c85d57c6";
-    private const string WEB_URL = "http://dreamlo.com/lb/";
+  
     private const int MAX_LEADER_BOARD_LENGTH = 25;
 
     private List<LeaderBoardEntry> leaderBoardEntryList;
@@ -26,46 +21,52 @@ public class LeaderBoard : MonoBehaviour
     [SerializeField] private Transform leaderBoardContainer;
     [SerializeField] private ScrollRect scrollRect;
 
+    private DateTime lastGameTime;
+
+    public void Start()
+    {
+       StartCoroutine(DownloadLeaderBoard());
+    }
 
     #region Server Upload/Download
 
-    IEnumerator UploadNewScore(string name, int score)
+    IEnumerator UploadNewScore(string username, int score)
     {
-        Leaderboards.LastToStand.UploadNewEntry(name,score);
+        Leaderboards.LastToStand.UploadNewEntry(username,score);
         yield return null;
-        //UnityWebRequest www = UnityWebRequest.Get(WEB_URL + PRIVATE_CODE + "/add/" + UnityWebRequest.EscapeURL(name) + "/" + score);
-        //yield return www.SendWebRequest();
     }
 
 
     IEnumerator DownloadLeaderBoard()
     {
+        if ((DateTime.Now - lastGameTime).TotalSeconds<30)
+        {
+            yield break;
+        }
         leaderBoardEntryList = new List<LeaderBoardEntry>();
-        Leaderboards.LastToStand.GetEntries(ProcessRawDownload);
-        
+        Leaderboards.LastToStand.GetEntries(ProcessDownload);
         yield return null;
-
-       //UnityWebRequest www = UnityWebRequest.Get(WEB_URL + PUBLIC_CODE + "/pipe");
-       // yield return www.SendWebRequest();
-
-       // string rawDownload = www.downloadHandler.text;
-       // ProcessRawDownload(rawDownload);
     }
 
-    private void ProcessRawDownload(Dan.Models.Entry[] entries)
+    private void ProcessDownload(Dan.Models.Entry[] entries)
     {
+        lastGameTime = DateTime.Now;
         leaderBoardEntryList = new List<LeaderBoardEntry>();
-        entries = entries.ToList().OrderByDescending(o=>o.Rank).ToArray();
+        entries = entries.ToList().OrderBy(o=>o.Rank).ToArray();
         foreach (var entry in entries)
         {
             string entryName = System.Web.HttpUtility.UrlDecode(entry.Username);
-            int score =entry.Score;
+            int score = entry.Score;
             leaderBoardEntryList.Add(new LeaderBoardEntry(entryName, score));
         };
 
         //First empty the leader board
         foreach (Transform child in leaderBoardContainer.transform)
         {
+            if (child.gameObject.GetComponent<LeaderBoardInputRow>() != null)
+            {
+                continue;
+            }
             Destroy(child.gameObject);
         }
 
@@ -79,21 +80,6 @@ public class LeaderBoard : MonoBehaviour
         }
     }
 
-
-    private void ProcessRawDownload(string rawDownload)
-    {
-        leaderBoardEntryList = new List<LeaderBoardEntry>();
-        
-        string[] entries = rawDownload.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-        for (int i = 0; i < entries.Length; i++)
-        {
-            string[] entryInfo = entries[i].Split(new char[] { '|' });
-            string entryName = System.Web.HttpUtility.UrlDecode(entryInfo[0]);
-            int score = int.Parse(entryInfo[1]);
-            leaderBoardEntryList.Add(new LeaderBoardEntry(entryName, score));
-        }
-    }
 
     #endregion
 
@@ -110,21 +96,6 @@ public class LeaderBoard : MonoBehaviour
     {
         //Update the current leader board list
         yield return DownloadLeaderBoard();
-
-        //First empty the leader board
-        foreach (Transform child in leaderBoardContainer.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        //Create new leader board
-        int rankCount = 1;
-        foreach (LeaderBoardEntry entry in leaderBoardEntryList)
-        {
-            LeaderBoardRowEntry row = Instantiate(RowEntryPrefab, leaderBoardContainer).GetComponent<LeaderBoardRowEntry>();
-            row.Init(rankCount, entry);
-            rankCount++;
-        }
     }
 
 
@@ -138,13 +109,7 @@ public class LeaderBoard : MonoBehaviour
     {
         //Update the current leader board list
         yield return DownloadLeaderBoard();
-
-        //First empty the leader board
-        foreach (Transform child in leaderBoardContainer.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
+        
         // Insert the new entry if it qualifies for the leader board
         bool entryInserted = false;
         int newEntryRank = 0;
