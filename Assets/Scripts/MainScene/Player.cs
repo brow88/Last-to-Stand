@@ -162,7 +162,9 @@ public class Player : MonoBehaviour
         playerBarUI.gameObject.SetActive(false);
         leaningMeterUI.gameObject.SetActive(false);
         quickTimeUI.gameObject.SetActive(false);
-        gameObject.SetActive(false);
+
+        //disables this script
+        enabled = false;
     }
 
 

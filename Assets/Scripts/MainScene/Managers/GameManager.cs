@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +19,6 @@ public class GameManager : MonoBehaviour
 
     public enum GameState
     {
-        Test,
         Tutorial,
         StartTimer,
         Playing,
@@ -39,16 +39,6 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(this);
-        }
-    }
-
-
-    //TESTING CODE: TEST IN THE ENUM IS ALSO ONLY USED HERE.         THIS CODE NEEDS TO BE REMOVED TO ENABLE MULTIPLER
-    private void Start()
-    {
-        if (state == GameState.Test)
-        {
-            NewGame(GameMode.SinglePlayer);
         }
     }
 
@@ -141,6 +131,7 @@ public class GameManager : MonoBehaviour
     {
         playersScores[player] += score;
         OnScoreChange?.Invoke(this, EventArgs.Empty);
+        Debug.Log("Score changed");
     }
 
     public void PlayerHasFallen(Player player)
