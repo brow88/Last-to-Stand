@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
-    public bool isPlayerOne;
+    public bool IsPlayerOne;
 
     [Header("UI")]
     [SerializeField] private PlayerBarUI playerBarUI;
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
 
     private void GameManager_OnScoreChange(object sender, EventArgs e)
     {
-        if (isPlayerOne || GameManager.Instance.IsGameModeMultiplyPlayer())
+        if (IsPlayerOne || GameManager.Instance.IsGameModeMultiplyPlayer())
         {
             int score = GameManager.Instance.GetPlayerScores()[this];
             playerBarUI.UpdateScoreDisplay(score);
@@ -145,7 +145,15 @@ public class Player : MonoBehaviour
 
             if (DrunkLevel >= 100)
             {
-                GameManager.Instance.PlayerHasFallen(this);
+                if (IsPlayerOne)
+                {
+                    GameManager.Instance.TriggerGameOver(LoseCondition.Player1PassedOut);
+                }
+                else
+                {
+                    GameManager.Instance.TriggerGameOver(LoseCondition.Player2PassedOut);
+                }
+                
             }
         }
     }
@@ -176,7 +184,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void HandlePlayerInput()
     {
-        if (isPlayerOne)
+        if (IsPlayerOne)
         {
             //Player One inputs
             if (InputManager.Instance.LeanRightPlayerOneInput())
@@ -270,7 +278,14 @@ public class Player : MonoBehaviour
         if (leaning >= 0.98f || leaning <= -0.98f)
         {
             playerStanding = false;
-            GameManager.Instance.PlayerHasFallen(this);
+            if (IsPlayerOne)
+            {
+                GameManager.Instance.TriggerGameOver(LoseCondition.Player1FellOver);
+            }
+            else
+            {
+                GameManager.Instance.TriggerGameOver(LoseCondition.Player2FellOver);
+            }          
         }
     }
 

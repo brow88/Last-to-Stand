@@ -44,7 +44,7 @@ public class SlidingGlass : MonoBehaviour
             MoveGlass();
         }
 
-        if (Player.isPlayerOne)
+        if (Player.IsPlayerOne)
         {
             if (InputManager.Instance.CatchGlassPlayerOneInput())
             {
@@ -104,7 +104,7 @@ public class SlidingGlass : MonoBehaviour
 
     private void OnGlassCaught()
     {
-        if (Player.isPlayerOne)
+        if (Player.IsPlayerOne)
         {
             Debug.Log("Glass Caught! -> give it to the player 1");
         }

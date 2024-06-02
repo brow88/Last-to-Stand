@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class GameOverUI : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI gameOverReasonTextMesh;
+
     [Header("single player")]
     [SerializeField] private GameObject leaderBoard;
 
@@ -29,37 +31,59 @@ public class GameOverUI : MonoBehaviour
             GameManager.Instance.RetryGame();
         });
 
-        GameManager.Instance.OnGameStateChange += GameManager_OnGameStateChange;
-
+        GameManager.Instance.OnGameStateChange += Instance_OnGameStateChange;
+        GameManager.Instance.OnGameOver += GameManager_OnGameOver;
+        
         Hide();
     }
 
-    private void GameManager_OnGameStateChange(object sender, System.EventArgs e)
+    private void Instance_OnGameStateChange(object sender, System.EventArgs e)
     {
-        if (GameManager.Instance.IsGameOver())
-        {
-            Show();
-        }
-        else
+        if (!GameManager.Instance.IsGameOver())
         {
             Hide();
         }
     }
 
-    private void Show()
+    private void GameManager_OnGameOver(object sender, LoseCondition loseCondition)
     {
+        //Show
         gameObject.SetActive(true);
 
         //Setups for Game over
-        if (GameManager.Instance.IsGameModeSinglePlayer())
+        switch (loseCondition)
         {
-            SinglePlayerGameOver();
-        }
-        else if (GameManager.Instance.IsGameModeMultiplyPlayer())
-        {
-            MultiplayerGameOver();
+            case LoseCondition.Player1FellOver:
+                if (GameManager.Instance.IsGameModeSinglePlayer())
+                {
+                    gameOverReasonTextMesh.text = "Oops you fell over";
+                    SinglePlayerGameOver();
+                }
+                else
+                {
+                    MultiplayerGameOver();
+                }
+                break;
+            case LoseCondition.Player1PassedOut:
+                if (GameManager.Instance.IsGameModeSinglePlayer())
+                {
+                    gameOverReasonTextMesh.text = "You passed out";
+                    SinglePlayerGameOver();
+                }
+                else
+                {
+                    MultiplayerGameOver();
+                }
+                break;
+            case LoseCondition.Player2FellOver:
+                MultiplayerGameOver();
+                break;
+            case LoseCondition.Player2PassedOut:
+                MultiplayerGameOver();
+                break;
         }
     }
+
 
     private void SinglePlayerGameOver()
     {
@@ -88,6 +112,7 @@ public class GameOverUI : MonoBehaviour
             Destroy(child.gameObject);
         }
 
+        KeyValuePair<Player, int>? highestScorePlayer = null;
         foreach (var kvp in GameManager.Instance.GetPlayerScores())
         {
             //Instantiate score text
@@ -95,6 +120,21 @@ public class GameOverUI : MonoBehaviour
 
             //Change the text for the score text
             scoreText.GetComponent<TextMeshProUGUI>().text = "Score: " + kvp.Value.ToString();
+
+            // Find the player with the highest score
+            if (highestScorePlayer == null || kvp.Value > highestScorePlayer.Value.Value)
+            {
+                highestScorePlayer = kvp;
+            }
+        }
+
+        if (highestScorePlayer.Value.Key.IsPlayerOne)
+        {
+            gameOverReasonTextMesh.text = "Player 1 wins";
+        }
+        else
+        {
+            gameOverReasonTextMesh.text = "Player 2 wins";
         }
     }
 

@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get;  private set; }
 
     public event EventHandler OnGameStateChange;
+    public event EventHandler<LoseCondition> OnGameOver;
     public event EventHandler OnScoreChange;
 
     [Tooltip("Timer count down before game starts")]
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
         Tutorial,
         StartTimer,
         Playing,
+        GameOverTansitionTansition,
         GameOver
     }
     private GameState state;
@@ -60,7 +62,13 @@ public class GameManager : MonoBehaviour
                 {
                     ChangeGameState(GameState.Playing);
                 }
-                break; 
+                break;
+            case GameState.GameOverTansitionTansition:
+                if (InputManager.Instance.SpaceBarDown())
+                {
+                    ChangeGameState(GameState.StartTimer);
+                }
+                break;
             case GameState.Playing:
                 break; 
             case GameState.GameOver:
@@ -88,7 +96,7 @@ public class GameManager : MonoBehaviour
 
             if (gameMode == GameMode.SinglePlayer)
             {
-                if (player.isPlayerOne)
+                if (player.IsPlayerOne)
                 {
                     playersScores.Add(player, 0);
                     player.PlayerReset();
@@ -133,10 +141,44 @@ public class GameManager : MonoBehaviour
         Debug.Log("Score changed");
     }
 
-    public void PlayerHasFallen(Player player)
+    public void TriggerGameOver(LoseCondition loseCondition)
     {
+        // Alters multi-player score due to loss
+        if (gameMode == GameMode.Multiplayer)
+        {
+            bool isPlayerOne = false;
+
+            switch (loseCondition)
+            {
+                case LoseCondition.Player1FellOver:
+                    isPlayerOne = true;
+                    break;
+                case LoseCondition.Player1PassedOut:
+                    isPlayerOne = true;
+                    break;
+                case LoseCondition.Player2FellOver:
+                    isPlayerOne = false;
+                    break;
+                case LoseCondition.Player2PassedOut:
+                    isPlayerOne = false;
+                    break;
+            }
+
+            foreach (var kvp in playersScores)
+            {
+                if (kvp.Key.IsPlayerOne == isPlayerOne)
+                {
+                    playersScores[kvp.Key] -= 20;
+                }
+            }
+        }
+
+        //ToDo: transition fade+animation. have put transition in game state enum and space to go to game over
+
+        OnGameOver?.Invoke(this, loseCondition);
         ChangeGameState(GameState.GameOver);
     }
+
 
     #region Getter and setters
 

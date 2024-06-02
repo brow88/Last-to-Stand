@@ -77,7 +77,7 @@ public class Bartender : MonoBehaviour
         Transform endPosition;
         Transform catchPosition;
 
-        if (player.isPlayerOne)
+        if (player.IsPlayerOne)
         {
             startPosition = glassManager.StartPositionPlayer1;
             endPosition = glassManager.EndPositionPlayer1;
