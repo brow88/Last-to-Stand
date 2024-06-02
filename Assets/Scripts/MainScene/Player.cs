@@ -306,14 +306,22 @@ public class Player : MonoBehaviour
             return;
         hasDrink = false;
         NumberOfDrinks++;
-        DrunkLevel++;
-        GameManager.Instance.UpdatePlayerScore(this, 1); //ToDo: score vary according to type of drink?!?
+
+        ChangedDrunkLevel(1);
+
+        GameManager.Instance.UpdatePlayerScore(this, 5); //ToDo: score vary according to type of drink?!?
 
         if (NumberOfDrinks % 3 == 0)
         {
             quickTimeUI.gameObject.SetActive(true);
             StartQTE();
         }
+    }
+
+    public void ChangedDrunkLevel(int amount)
+    {
+        DrunkLevel += amount;
+        playerBarUI.UpdateVomitMeter(DrunkLevel/100f);
     }
 
     #endregion
@@ -369,7 +377,7 @@ public class Player : MonoBehaviour
                 {
                     // Player successfully hit the target
                     Debug.Log($"QTE Success! (perfect)");
-                    DrunkLevel += QteerfectRaisesDrunkBy;
+                    ChangedDrunkLevel(QteerfectRaisesDrunkBy);
                     EndQTE();
                     OnQTEHitOrMiss?.Invoke(true);
                 }
@@ -377,7 +385,7 @@ public class Player : MonoBehaviour
                 {
                     // Player successfully hit the target
                     Debug.Log($"QTE Success! (ok)");
-                    DrunkLevel += QteOkRaisesDrunkBy;
+                    ChangedDrunkLevel(QteOkRaisesDrunkBy);
                     EndQTE();
                     OnQTEHitOrMiss?.Invoke(true);
                 }
@@ -390,7 +398,7 @@ public class Player : MonoBehaviour
                     if (--QteNumberOfTries <=0)
                     {
                         //fail too many times, what now?
-                        DrunkLevel+=QteFailedRaisesDrunkBy;
+                        ChangedDrunkLevel(QteFailedRaisesDrunkBy);
                         EndQTE();
                     }
                 }
