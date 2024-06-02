@@ -71,11 +71,30 @@ public class Bartender : MonoBehaviour
     public void ServeDrink(Player player)
     {
         Debug.Log(" Bartender is serving Drink");
-        var newGlass =Instantiate(glass, GlassManager.Instance.GetPlayer1EndPos(),GlassManager.Instance.StartPositionPlayer1.rotation);
+
+        GlassManager glassManager = GlassManager.Instance;
+        Transform startPosition;
+        Transform endPosition;
+        Transform catchPosition;
+
+        if (player.isPlayerOne)
+        {
+            startPosition = glassManager.StartPositionPlayer1;
+            endPosition = glassManager.EndPositionPlayer1;
+            catchPosition = glassManager.CatchPositionPlayer1;
+        }
+        else
+        {
+            startPosition = glassManager.StartPositionPlayer2;
+            endPosition = glassManager.EndPositionPlayer2;
+            catchPosition = glassManager.CatchPositionPlayer2;
+        }
+
+        var newGlass = Instantiate(glass, endPosition.position, startPosition.rotation);
         var glassProperties = newGlass.GetComponent<SlidingGlass>();
-        glassProperties.StartPosition = GlassManager.Instance.StartPositionPlayer1;
-        glassProperties.EndPosition = GlassManager.Instance.EndPositionPlayer1;
-        glassProperties.CatchPosition = GlassManager.Instance.CatchPositionPlayer1;
+        glassProperties.StartPosition = startPosition;
+        glassProperties.EndPosition = endPosition;
+        glassProperties.CatchPosition = catchPosition;
         glassProperties.Player = player;
         glassProperties.Speed = UnityEngine.Random.Range(startMinGlassSpeed, startMaxGlassSpeed);
         glassProperties.SetReady();

@@ -223,11 +223,11 @@ public class Player : MonoBehaviour
         var isLeft = Random.Range(0, 10) > 5;
         if (isLeft)
         {
-            leaning -= (float)slapForce;
+            leaning -= slapForce;
         }
         else
         {
-            leaning += (float)slapForce;
+            leaning += slapForce;
         }    
     }
 
@@ -289,7 +289,7 @@ public class Player : MonoBehaviour
 
     private void ScheduleNextStop()
     {
-        float interval = UnityEngine.Random.Range(minStopInterval, maxStopInterval) / (NumberOfDrinks + 1);
+        float interval = Random.Range(minStopInterval, maxStopInterval) / (NumberOfDrinks + 1);
         nextStopTime = Time.time + interval;
     }
 

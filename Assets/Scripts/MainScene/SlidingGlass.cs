@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -45,10 +44,21 @@ public class SlidingGlass : MonoBehaviour
             MoveGlass();
         }
 
-        if (InputManager.Instance.CatchGlassPlayerOneInput())
+        if (Player.isPlayerOne)
         {
-            TryCatchGlass();
+            if (InputManager.Instance.CatchGlassPlayerOneInput())
+            {
+                TryCatchGlass();
+            }
         }
+        else
+        {
+            if (InputManager.Instance.CatchGlassPlayerTwoInput())
+            {
+                TryCatchGlass();
+            }
+        }
+
     }
 
     private void MoveGlass()
@@ -94,9 +104,17 @@ public class SlidingGlass : MonoBehaviour
 
     private void OnGlassCaught()
     {
-        Debug.Log("Glass Caught! -> give it to the player");
+        if (Player.isPlayerOne)
+        {
+            Debug.Log("Glass Caught! -> give it to the player 1");
+        }
+        else
+        {
+            Debug.Log("Glass Caught! -> give it to the player 2");
+        }
+        
         Player.GotDrink();
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 
     private void OnReachEndPosition()

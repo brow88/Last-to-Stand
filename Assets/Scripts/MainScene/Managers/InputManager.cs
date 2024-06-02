@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -111,8 +110,8 @@ public class InputManager : MonoBehaviour
     }
 
     public bool DrinkPlayerTwoInput()
-    {
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+    {        
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             return true;
         }
