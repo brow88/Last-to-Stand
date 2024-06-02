@@ -70,6 +70,10 @@ MonoBehaviour:
     type: 2
     clip: {fileID: 8300000, guid: 17e75c554d58d5047b7c834bf49f50cb, type: 3}
     OverwriteVolumeOffset: 0
+  - name: bang
+    type: 2
+    clip: {fileID: 8300000, guid: 333b0f72cba98654b9d24ac4da49522e, type: 3}
+    OverwriteVolumeOffset: 0
   MusicSource: {fileID: 0}
   currentType: 0
 --- !u!82 &3720056668973126406

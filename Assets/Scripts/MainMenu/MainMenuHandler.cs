@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Unity.VisualScripting;
 using UnityEditor;
 
 public class MainMenuHandler : MonoBehaviour
@@ -55,9 +56,15 @@ public class MainMenuHandler : MonoBehaviour
         Time.timeScale = 1f; // in case we want to add pause menu in game and need to set timeScale to 0
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+            gameObject.PlaySound(SoundManager.Instance.FindClip("bang"));
+    }
+
     private void SetMouseCursor()
     {
-        Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.ForceSoftware);
+        Cursor.SetCursor(cursorTexture, new Vector2(20,20), CursorMode.ForceSoftware);
     }
 
     #region Buttons
