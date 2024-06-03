@@ -7137,6 +7137,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: QuickTImeUI
       objectReference: {fileID: 0}
+    - target: {fileID: 1884101888397008548, guid: ea1a1275d73519e49bae9153fb87b293, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3742184695911552540, guid: ea1a1275d73519e49bae9153fb87b293, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
