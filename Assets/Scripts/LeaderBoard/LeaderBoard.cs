@@ -109,7 +109,16 @@ public class LeaderBoard : MonoBehaviour
     {
         //Update the current leader board list
         yield return DownloadLeaderBoard();
-        
+
+        //make sure there are no old highscore controls left over
+        foreach (Transform child in leaderBoardContainer.transform)
+        {
+            if (child.gameObject.GetComponent<LeaderBoardInputRow>() != null)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+
         // Insert the new entry if it qualifies for the leader board
         bool entryInserted = false;
         int newEntryRank = 0;
