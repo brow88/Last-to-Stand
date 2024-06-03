@@ -131,6 +131,7 @@ public class Player : MonoBehaviour
 
             if (DrunkLevel >= 100)
             {
+                gameObject.PlaySound(SoundManager.Instance.FindClip("vomit"));
                 if (IsPlayerOne)
                 {
                     GameManager.Instance.TriggerGameOver(LoseCondition.Player1PassedOut);

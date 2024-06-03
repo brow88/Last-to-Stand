@@ -78,6 +78,10 @@ MonoBehaviour:
     type: 2
     clip: {fileID: 8300000, guid: 343c68181df52924c82c315ce96ea4d5, type: 3}
     OverwriteVolumeOffset: 0
+  - name: vomit
+    type: 2
+    clip: {fileID: 8300000, guid: 604e2fcbe5ced5f40ba479b777dc1de3, type: 3}
+    OverwriteVolumeOffset: 0
   MusicSource: {fileID: 0}
   currentType: 0
 --- !u!82 &3720056668973126406
