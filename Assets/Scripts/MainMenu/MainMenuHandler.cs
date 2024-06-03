@@ -9,7 +9,7 @@ public class MainMenuHandler : MonoBehaviour
     [Header("Panels")]
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject leaderBoardPanel;
-    [SerializeField] private GameObject optionsPanel;
+    //[SerializeField] private GameObject optionsPanel;
     [SerializeField] private GameObject creditPanel;
     [SerializeField] private GameObject fadeOutPanel;
 
@@ -17,15 +17,15 @@ public class MainMenuHandler : MonoBehaviour
     [SerializeField] private Button singlePlayerButton;
     [SerializeField] private Button multiplayerButton;
     [SerializeField] private Button leaderBoardButton;
-    [SerializeField] private Button optionsButton;
+    //[SerializeField] private Button optionsButton;
     [SerializeField] private Button creditButton;
     [SerializeField] private Button quitButton;
 
     [Header("Leader Board")]
     [SerializeField] private Button leaderBoardReturnButton;
 
-    [Header("Options")]
-    [SerializeField] private Button optionsReturnButton;
+    //[Header("Options")]
+    //[SerializeField] private Button optionsReturnButton;
 
     [Header("Credits")]
     [SerializeField] private Button creditsReturnButton;
@@ -77,14 +77,14 @@ public class MainMenuHandler : MonoBehaviour
         //Ensures all the listeners are active in scene (the appropriate ones are turned off by StartingGamePanelsSetup() )
         mainMenuPanel.SetActive(true);
         leaderBoardPanel.SetActive(true);
-        optionsPanel.SetActive(true);
+        //optionsPanel.SetActive(true);
         creditPanel.SetActive(true);
 
         //Main menu
         singlePlayerButton.onClick.AddListener(StartSinglePlayerMode);
         multiplayerButton.onClick.AddListener(StartMultiPlayerMode);
         leaderBoardButton.onClick.AddListener(LeaderBoard);
-        optionsButton.onClick.AddListener(Options);
+        //optionsButton.onClick.AddListener(Options);
         creditButton.onClick.AddListener(Credits);
         quitButton.onClick.AddListener(QuitGame);
 
@@ -92,7 +92,7 @@ public class MainMenuHandler : MonoBehaviour
         leaderBoardReturnButton.onClick.AddListener(MainMenu);
 
         //Options
-        optionsReturnButton.onClick.AddListener(MainMenu);
+        //optionsReturnButton.onClick.AddListener(MainMenu);
 
         //credits
         creditsReturnButton.onClick.AddListener(MainMenu);
@@ -114,7 +114,7 @@ public class MainMenuHandler : MonoBehaviour
     {
         mainMenuPanel.SetActive(true);
         leaderBoardPanel.SetActive(false);
-        optionsPanel.SetActive(false);
+        //optionsPanel.SetActive(false);
         creditPanel.SetActive(false);
     }
 
@@ -123,7 +123,7 @@ public class MainMenuHandler : MonoBehaviour
     {
         mainMenuPanel.SetActive(false);
         leaderBoardPanel.SetActive(true);
-        optionsPanel.SetActive(false);
+        //optionsPanel.SetActive(false);
         creditPanel.SetActive(false);
 
         leaderBoardPanel.GetComponent<LeaderBoard>().CreateLeaderBoard();
@@ -134,7 +134,7 @@ public class MainMenuHandler : MonoBehaviour
     {
         mainMenuPanel.SetActive(false);
         leaderBoardPanel.SetActive(false);
-        optionsPanel.SetActive(true);
+        //optionsPanel.SetActive(true);
         creditPanel.SetActive(false);
     }
 
@@ -143,7 +143,7 @@ public class MainMenuHandler : MonoBehaviour
     {
         mainMenuPanel.SetActive(false);
         leaderBoardPanel.SetActive(false);
-        optionsPanel.SetActive(false);
+        //optionsPanel.SetActive(false);
         creditPanel.SetActive(true);
     }
 
