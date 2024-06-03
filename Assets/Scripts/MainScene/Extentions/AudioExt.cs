@@ -17,7 +17,7 @@ public static class AudioExt
             audioSource = gameObject.AddComponent<AudioSource>();
         }
 
-        var volume = volumeOverwrite ?? 0.6f; //todo we can make this a setting if we have time
+        var volume = volumeOverwrite ?? 0.5f; //todo we can make this a setting if we have time
         audioSource.volume = volume;
         audioSource.PlayOneShot(audioClip);
     }

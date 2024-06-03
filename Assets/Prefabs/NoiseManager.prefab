@@ -53,11 +53,11 @@ MonoBehaviour:
   - name: MainMenu
     type: 0
     clip: {fileID: 8300000, guid: 26f78c337a19f0f4d85eca148146a8c5, type: 3}
-    OverwriteVolumeOffset: 0
+    OverwriteVolumeOffset: -0.4
   - name: GameMusic1
     type: 1
     clip: {fileID: 8300000, guid: e43101c0e86b45c4dba3d8ea57e45097, type: 3}
-    OverwriteVolumeOffset: 0
+    OverwriteVolumeOffset: -0.03
   - name: GlassSlide
     type: 2
     clip: {fileID: 8300000, guid: 3dd07f8cba56d1e418d85c482e3e6a22, type: 3}
