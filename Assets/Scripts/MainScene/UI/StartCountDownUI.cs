@@ -12,6 +12,11 @@ public class StartCountDownUI : MonoBehaviour
         Hide();
     }
 
+    private void OnDestroy()
+    {
+        GameManager.Instance.OnGameStateChange -= GameManager_OnGameStateChange;
+    }
+
     private void GameManager_OnGameStateChange(object sender, System.EventArgs e)
     {
         if (GameManager.Instance.IsStartTimerActive())

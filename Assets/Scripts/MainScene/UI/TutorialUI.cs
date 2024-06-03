@@ -32,6 +32,11 @@ public class TutorialUI : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        GameManager.Instance.OnGameStateChange -= GameManager_OnGameStateChange;
+    }
+
     private void Show(GameMode gameMode)
     {
         gameObject.SetActive(true);

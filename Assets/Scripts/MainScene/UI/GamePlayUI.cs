@@ -23,6 +23,11 @@ public class GamePlayUI : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        GameManager.Instance.OnGameStateChange -= GameManager_OnGameStateChange;
+    }
+
     private void Show()
     {
         gameObject.SetActive(true);
