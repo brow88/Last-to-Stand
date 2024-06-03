@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TutorialUI : MonoBehaviour
 {
     [SerializeField] private GameObject OnePlayerControls;
     [SerializeField] private GameObject TwoPlayerControls;
 
+    [SerializeField] private Button backButton;
+
     private void Start()
     {
         GameManager.Instance.OnGameStateChange += GameManager_OnGameStateChange;
+        backButton.onClick.AddListener(SceneTransitionManager.Instance.LoadMainMenu);
     }
 
     private void GameManager_OnGameStateChange(object sender, System.EventArgs e)
