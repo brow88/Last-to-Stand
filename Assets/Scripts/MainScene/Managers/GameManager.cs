@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
                 if (player.IsPlayerOne)
                 {
                     playersScores.Add(player, 0);
-                    player.PlayerReset();
+                    //player.PlayerReset();
                 }
                 else
                 {
@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
             if (gameMode == GameMode.Multiplayer)
             {
                 playersScores.Add(player, 0);
-                player.PlayerReset();
+                //player.PlayerReset();
             }
         }
         ChangeGameState(GameState.Tutorial);

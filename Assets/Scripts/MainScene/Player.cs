@@ -103,6 +103,9 @@ public class Player : MonoBehaviour
         QteNumberOfTriesReset = QteNumberOfTries;
         GameManager.Instance.OnScoreChange += GameManager_OnScoreChange;
         lastLeanCheck = DateTime.Now;
+
+        leaningMeterUI.UpdateLeaningMeter(leaning);
+        playerBarUI.ResetPlayerBarUI();
     }
 
     private void Update()
@@ -177,6 +180,7 @@ public class Player : MonoBehaviour
         playerStanding = true;
         leaningMeterUI.UpdateLeaningMeter(leaning);
         playerBarUI.ResetPlayerBarUI();
+        animator.SetTrigger("Reset");
     }
 
 
@@ -313,15 +317,14 @@ public class Player : MonoBehaviour
         if (leaning >= 0.98f || leaning <= -0.98f)
         {
             gameObject.PlaySound(SoundManager.Instance.FindClip("fall"));
+            animator.SetTrigger("Fall");
             playerStanding = false;
             if (IsPlayerOne)
-            {
-                animator.SetTrigger("Fall");
+            {               
                 GameManager.Instance.TriggerGameOver(LoseCondition.Player1FellOver);
             }
             else
             {
-                animator.SetTrigger("Fall");
                 GameManager.Instance.TriggerGameOver(LoseCondition.Player2FellOver);
             }          
         }
