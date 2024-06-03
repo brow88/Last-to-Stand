@@ -137,8 +137,8 @@ public class Bartender : MonoBehaviour
     {
         float interval = UnityEngine.Random.Range(minIntervalServing, maxIntervalServing);
         nextDrinkServingTime = Time.time + interval;
-        startMinGlassSpeed++;
-        startMaxGlassSpeed++;
+        startMinGlassSpeed += 20;
+        startMaxGlassSpeed += 20;
 
         startMinGlassSpeed = Math.Min(startMinGlassSpeed, 100f);
         startMaxGlassSpeed = Math.Min(startMaxGlassSpeed, 150f);

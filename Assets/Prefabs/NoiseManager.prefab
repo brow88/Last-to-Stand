@@ -82,6 +82,10 @@ MonoBehaviour:
     type: 2
     clip: {fileID: 8300000, guid: 604e2fcbe5ced5f40ba479b777dc1de3, type: 3}
     OverwriteVolumeOffset: 0
+  - name: drink
+    type: 2
+    clip: {fileID: 8300000, guid: 577f59fa2f7507741b802f11147bc606, type: 3}
+    OverwriteVolumeOffset: 0.3
   MusicSource: {fileID: 0}
   currentType: 0
 --- !u!82 &3720056668973126406

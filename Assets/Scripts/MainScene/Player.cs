@@ -370,6 +370,8 @@ public class Player : MonoBehaviour
         //Animation
         animator.SetTrigger("Drink");
 
+        gameObject.PlaySound(SoundManager.Instance.FindClip("drink"));
+
         //release glass back onto table after animation.
         yield return new WaitForSeconds(1.5f);
         animator.SetLayerWeight(3, 0);
