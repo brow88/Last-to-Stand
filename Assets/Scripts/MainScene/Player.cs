@@ -308,6 +308,7 @@ public class Player : MonoBehaviour
     {
         if (leaning >= 0.98f || leaning <= -0.98f)
         {
+            gameObject.PlaySound(SoundManager.Instance.FindClip("fall"));
             playerStanding = false;
             if (IsPlayerOne)
             {
