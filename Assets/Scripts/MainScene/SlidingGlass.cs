@@ -32,7 +32,7 @@ public class SlidingGlass : MonoBehaviour
         transform.position = moveToStart ? StartPosition.position : EndPosition.position;
         targetPosition = moveToStart ? EndPosition.position : StartPosition.position;
         isMoving = true;
-        gameObject.PlaySound(SoundManager.Instance.FindClip("GlassSlide"));
+        gameObject.PlaySound(SoundManager.Instance.FindClip("GlassSlide"), 0.2f);
     }
 
     private void Update()
