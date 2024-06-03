@@ -7337,11 +7337,11 @@ PrefabInstance:
       objectReference: {fileID: 1175334927}
     - target: {fileID: 6348284445373472709, guid: 25cd65bf23ba43243bf33eea38da841a, type: 3}
       propertyPath: startMaxGlassSpeed
-      value: 90
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 6348284445373472709, guid: 25cd65bf23ba43243bf33eea38da841a, type: 3}
       propertyPath: startMinGlassSpeed
-      value: 60
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8084375332025095522, guid: 25cd65bf23ba43243bf33eea38da841a, type: 3}
       propertyPath: m_RootOrder

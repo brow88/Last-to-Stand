@@ -140,8 +140,8 @@ public class Bartender : MonoBehaviour
         startMinGlassSpeed += 20;
         startMaxGlassSpeed += 20;
 
-        startMinGlassSpeed = Math.Min(startMinGlassSpeed, 100f);
-        startMaxGlassSpeed = Math.Min(startMaxGlassSpeed, 150f);
+        startMinGlassSpeed = Math.Min(startMinGlassSpeed, 200f);
+        startMaxGlassSpeed = Math.Min(startMaxGlassSpeed, 350f);
 
     }
 
