@@ -147,7 +147,10 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        SwayAnimationWeights();
+        if (playerStanding)
+        {
+            SwayAnimationWeights();
+        }     
     }
 
     private void GameManager_OnScoreChange(object sender, EventArgs e)
@@ -313,10 +316,12 @@ public class Player : MonoBehaviour
             playerStanding = false;
             if (IsPlayerOne)
             {
+                animator.SetTrigger("Fall");
                 GameManager.Instance.TriggerGameOver(LoseCondition.Player1FellOver);
             }
             else
             {
+                animator.SetTrigger("Fall");
                 GameManager.Instance.TriggerGameOver(LoseCondition.Player2FellOver);
             }          
         }
