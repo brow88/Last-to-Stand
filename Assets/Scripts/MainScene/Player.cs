@@ -379,7 +379,7 @@ public class Player : MonoBehaviour
         animator.SetTrigger("Drink");
 
         gameObject.PlaySound(SoundManager.Instance.FindClip("drink"));
-
+        hasDrink = false;
         //release glass back onto table after animation.
         yield return new WaitForSeconds(1.5f);
         animator.SetLayerWeight(3, 0);
@@ -395,7 +395,7 @@ public class Player : MonoBehaviour
             StartQTE();
         }
 
-        hasDrink = false;
+       
     }
 
     public void ChangedDrunkLevel(int amount)
