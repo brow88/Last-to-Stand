@@ -135,15 +135,7 @@ public class Player : MonoBehaviour
             if (DrunkLevel >= 100)
             {
                 gameObject.PlaySound(SoundManager.Instance.FindClip("vomit"));
-                if (IsPlayerOne)
-                {
-                    GameManager.Instance.TriggerGameOver(LoseCondition.Player1PassedOut);
-                }
-                else
-                {
-                    GameManager.Instance.TriggerGameOver(LoseCondition.Player2PassedOut);
-                }
-                
+                GameManager.Instance.TriggerGameOver(IsPlayerOne?LoseCondition.Player1PassedOut:LoseCondition.Player2PassedOut);                
             }
         }
     }
@@ -180,6 +172,12 @@ public class Player : MonoBehaviour
         playerStanding = true;
         leaningMeterUI.UpdateLeaningMeter(leaning);
         playerBarUI.ResetPlayerBarUI();
+        NumberOfDrinks = 0;
+        DrunkLevel = 0;
+        qteMinSpeed = 0.5f;
+        qteMaxSpeed = 0.9f;
+        //todo reset drink sliding speeds
+        //todo these values can be set from the editor, creater a backup of those values and use those for the reset..
         animator.SetTrigger("Reset");
     }
 
@@ -319,14 +317,7 @@ public class Player : MonoBehaviour
             gameObject.PlaySound(SoundManager.Instance.FindClip("fall"));
             animator.SetTrigger("Fall");
             playerStanding = false;
-            if (IsPlayerOne)
-            {               
-                GameManager.Instance.TriggerGameOver(LoseCondition.Player1FellOver);
-            }
-            else
-            {
-                GameManager.Instance.TriggerGameOver(LoseCondition.Player2FellOver);
-            }          
+            GameManager.Instance.TriggerGameOver(IsPlayerOne?LoseCondition.Player1FellOver: LoseCondition.Player2FellOver);    
         }
     }
 
@@ -441,7 +432,9 @@ public class Player : MonoBehaviour
         OnQTEUpdate?.Invoke(qteMarkerPosition);
 
         // Check for player input
-        if (InputManager.Instance.QuickTimePlayerOneInput() && isQteAllowed)
+        var isPlayerPressingQte = IsPlayerOne ? InputManager.Instance.QuickTimePlayerOneInput() : InputManager.Instance.QuickTimePlayerTwoInput();
+
+        if (isPlayerPressingQte && isQteAllowed)
         {
             if (!isQteRecording)
             {
