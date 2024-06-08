@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int QteOkRaisesDrunkBy = 10;
     [SerializeField] private int QteerfectRaisesDrunkBy = 0;
      private int QteNumberOfTriesReset;
+    private bool isPlayerPressingQte = false;
 
     private bool isQteAllowed = true;
     private bool isQteRecording = true;
@@ -235,6 +236,8 @@ public class Player : MonoBehaviour
                 StartCoroutine(Drink());
             }
         }
+        // Check for player input
+        isPlayerPressingQte = IsPlayerOne ? InputManager.Instance.QuickTimePlayerOneInput() : InputManager.Instance.QuickTimePlayerTwoInput();
 
     }
 
@@ -431,8 +434,7 @@ public class Player : MonoBehaviour
         // Send QTE update to the UI
         OnQTEUpdate?.Invoke(qteMarkerPosition);
 
-        // Check for player input
-        var isPlayerPressingQte = IsPlayerOne ? InputManager.Instance.QuickTimePlayerOneInput() : InputManager.Instance.QuickTimePlayerTwoInput();
+        
 
         if (isPlayerPressingQte && isQteAllowed)
         {
