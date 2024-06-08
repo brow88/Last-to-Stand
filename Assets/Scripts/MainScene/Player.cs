@@ -505,6 +505,8 @@ public class Player : MonoBehaviour
         {
             leaning += (float)vomitForce;
         }
+        //fail too many times, what now?
+        ChangedDrunkLevel(QteFailedRaisesDrunkBy);
     }
 
     public void StartQTE()
